@@ -38,11 +38,15 @@ jobs:
     - name: Build with Gradle Wrapper
       run: chmod +x gradlew && ./gradlew build
 
-    - name: Publish to GitHub Packages
-      run: ./gradlew publish
-      env:
-        USERNAME: ${{ github.actor }}
-        TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v4.3.3
+      with:
+        name: asts
+        path: build/libs/*
+        retention-days: 0
+        compression-level: 6
+        overwrite: false
+          
 
     # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
     # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.
