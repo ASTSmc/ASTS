@@ -1,0 +1,11 @@
+name: ASTS
+version: '${version}'
+main: tw.asts.mc.asts.ASTS
+api-version: '1.20'
+prefix: ASTS
+load: STARTUP
+authors: [AS_Allen_Shih]
+contributors: [AS_Allen_Shih]
+description: ASTS自製插件
+website: https://asts.tw/
+softdepend: []
