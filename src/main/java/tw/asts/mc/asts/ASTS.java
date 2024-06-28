@@ -1,25 +1,15 @@
 package tw.asts.mc.asts;
 
-import io.papermc.paper.command.brigadier.Commands;
-import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
-import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import tw.asts.mc.asts.command.command;
 
 import java.util.List;
 import java.util.logging.Level;
-
-final class basicConfig {
-    public static final String name = "§6[§4ASTS§6]§eAllen§a跨平台§b插件§f伺服器§r";
-    public static String prefix(String type) {
-        return name + " §e-§r §6" + type + "§r\n";
-    }
-}
 
 public final class ASTS extends JavaPlugin implements Listener {
 
@@ -34,13 +24,7 @@ public final class ASTS extends JavaPlugin implements Listener {
         saveConfig();
         PluginManager pluginManager = getServer().getPluginManager();
         pluginManager.registerEvents(this, this);
-        pluginManager.registerEvents(new MenuClick(), this);
-        LifecycleEventManager<Plugin> manager = this.getLifecycleManager();
-        manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
-            final Commands commands = event.registrar();
-            commands.register("wtp", "隨機傳送", List.of("worldtp", "wteleport", "worldteleport"), new Wtp(config));
-            commands.register("testmenu", "開啟選單", List.of("testastsmenu"), new Menu());
-        });
+        new command(this, pluginManager, config);
         getLogger().log(Level.INFO, "插件已啟動");
     }
 
@@ -51,7 +35,8 @@ public final class ASTS extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        event.getPlayer().sendMessage(text.miniMessageComponent(text.miniMessage(basicConfig.name + " - 歡迎來到" + basicConfig.name + "！")));
+        event.getPlayer().sendMessage(text.miniMessageComponent(text.miniMessage(BasicConfig.name + " - 歡迎來到" + BasicConfig.name + "！")));
     }
 
 }
+

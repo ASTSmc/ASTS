@@ -3,7 +3,7 @@ package tw.asts.mc.asts;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
-public class text {
+public final class text {
     public static String miniMessage(String message) {
         return message
                 .replaceAll("§0", "<black>")

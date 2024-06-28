@@ -1,29 +1,25 @@
-package tw.asts.mc.asts;
+package tw.asts.mc.asts.command;
 
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.kyori.adventure.text.Component;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.Command;
 import org.bukkit.entity.EntityType;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.bukkit.inventory.InventoryHolder;
+import tw.asts.mc.asts.*;
+
 import java.util.List;
 
 public final class Menu implements BasicCommand {
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
         if (stack.getExecutor() == null || stack.getExecutor().getType() != EntityType.PLAYER) {
-            stack.getSender().sendMessage(TextComponent.fromLegacyText(basicConfig.prefix("選單") + "只有玩家可以使用此指令！"));
+            stack.getSender().sendMessage(TextComponent.fromLegacyText(BasicConfig.prefix("選單") + "只有玩家可以使用此指令！"));
             return;
         }
         MenuInventory menuInventory = new MenuInventory(stack.getSender(), args);
@@ -50,27 +46,5 @@ final class MenuInventory implements InventoryHolder {
     @Override
     public Inventory getInventory() {
         return inventory;
-    }
-}
-final class MenuClick implements Listener {
-    @EventHandler
-    public void onInventoryClick(@NotNull InventoryClickEvent event) {
-        if (event.getInventory().getHolder() instanceof MenuInventory) {
-            event.setCancelled(true);
-            ItemStack item = event.getCurrentItem();
-            if (item == null || !item.getItemMeta().hasLore()) {
-                return;
-            }
-            List<Component> lore = item.getItemMeta().lore();
-            if (lore == null || lore.isEmpty()) {
-                return;
-            }
-            String command = PlainTextComponentSerializer.plainText().serialize(lore.getLast()).substring(1);
-            event.getWhoClicked().closeInventory();
-            Command commandServer = event.getWhoClicked().getServer().getCommandMap().getCommand(command.split(" ")[0]);
-            if (commandServer != null) {
-                event.getWhoClicked().getServer().dispatchCommand(event.getWhoClicked(), command);
-            }
-        }
     }
 }
