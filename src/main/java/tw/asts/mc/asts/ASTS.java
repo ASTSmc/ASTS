@@ -21,6 +21,10 @@ public final class ASTS extends JavaPlugin implements Listener {
         getLogger().log(Level.INFO, "正在啟動插件");
         config = getConfig();
         config.addDefault("wtp.disable.worlds", List.of("world_nether", "world_the_end"));
+        config.addDefault("rtp.disable.worlds", List.of("ASTS"));
+        config.addDefault("rtp.disable.far", false);
+        config.addDefault("rtp.radius.default", 10000);
+        config.addDefault("rtp.radius.far", 100000);
         config.options().copyDefaults(true);
         saveConfig();
         PluginManager pluginManager = getServer().getPluginManager();

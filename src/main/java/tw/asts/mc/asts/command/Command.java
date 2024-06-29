@@ -16,6 +16,7 @@ public final class Command {
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
             commands.register("wtp", "選擇世界傳送", List.of("worldtp", "wteleport", "worldteleport"), new Wtp(config));
+            commands.register("rtp", "隨機傳送", List.of("randomtp", "rteleport", "randomteleport"), new Rtp(config));
             commands.register("menu", "開啟[ASTS]Allen跨平台伺服器選單", List.of("astsmenu"), new Menu(plugin));
         });
     }
