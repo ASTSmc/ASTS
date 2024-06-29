@@ -25,10 +25,16 @@ public final class MenuClick implements Listener {
                 return;
             }
             String command = PlainTextComponentSerializer.plainText().serialize(lore.getLast()).substring(1);
-            event.getWhoClicked().closeInventory();
-            Command commandServer = event.getWhoClicked().getServer().getCommandMap().getCommand(command.split(" ")[0]);
+            String commandName = command.split(" ")[0];
+            Command commandServer = event.getWhoClicked().getServer().getCommandMap().getCommand(commandName);
             if (commandServer != null) {
+                if (!commandName.equals("menu")) {
+                    event.getWhoClicked().closeInventory();
+                }
                 event.getWhoClicked().getServer().dispatchCommand(event.getWhoClicked(), command);
+            }
+            else if (commandName == "關閉選單".substring(1)) {
+                event.getWhoClicked().closeInventory();
             }
         }
     }

@@ -6,13 +6,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import tw.asts.mc.asts.command.command;
+import tw.asts.mc.asts.command.Command;
 
 import java.util.List;
 import java.util.logging.Level;
 
 public final class ASTS extends JavaPlugin implements Listener {
 
+    public Command command;
     public FileConfiguration config;
 
     @Override
@@ -24,7 +25,7 @@ public final class ASTS extends JavaPlugin implements Listener {
         saveConfig();
         PluginManager pluginManager = getServer().getPluginManager();
         pluginManager.registerEvents(this, this);
-        new command(this, pluginManager, config);
+        command = new Command(this, pluginManager, config);
         getLogger().log(Level.INFO, "插件已啟動");
     }
 
