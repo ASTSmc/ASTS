@@ -29,6 +29,10 @@ public final class Wtp implements BasicCommand {
         if (args.length == 1) {
             String worldName = args[0];
             World world = stack.getSender().getServer().getWorlds().stream().filter(w -> w.getName().equals(worldName) && !disabledWorlds.contains(w.getName())).findFirst().orElse(null);
+            if (world == null) {
+                stack.getSender().sendMessage(text.miniMessageComponent(text.miniMessage(BasicConfig.prefix("世界傳送") + "請輸入正確的世界名稱！\n目前可用世界：" + stack.getSender().getServer().getWorlds().stream().filter(w -> !disabledWorlds.contains(w.getName())).map((w) -> w.getName()).collect(Collectors.joining("、")))));
+                return;
+            }
             stack.getExecutor().sendMessage(text.miniMessageComponent(text.miniMessage(BasicConfig.prefix("世界傳送") + "正在把您傳送至" + worldName + "...")));
             stack.getExecutor().teleport(world.getSpawnLocation());
         }
