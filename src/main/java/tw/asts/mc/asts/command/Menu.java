@@ -218,6 +218,7 @@ final class MenuInventory implements InventoryHolder {
         ItemStack exitGlass = new ItemStack(materialExit, 1);
         ItemMeta exitMeta = exitGlass.getItemMeta();
         exitMeta.displayName(text.miniMessageComponent(text.miniMessage("§c關閉選單")));
+        exitMeta.lore(List.of(text.miniMessageComponent(text.miniMessage("§7點我以關閉選單"))));
         exitGlass.setItemMeta(exitMeta);
         inventory.setItem(8, exitGlass);
         if (args.length != 0) {

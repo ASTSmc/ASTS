@@ -43,7 +43,7 @@ public final class MenuClick implements Listener {
                 }
                 event.getWhoClicked().getServer().dispatchCommand(event.getWhoClicked(), command);
             }
-            else if (commandName.equals("關閉選單".substring(1))) {
+            else if (commandName.equals("點我以關閉選單".substring(1))) {
                 event.getWhoClicked().closeInventory();
                 event.getWhoClicked().sendMessage(text.miniMessageComponent(text.miniMessage("§6[§4ASTS§6]§eAllen§a跨平台§b插件§f伺服器§r - §6選單已關閉§r")));
             }
