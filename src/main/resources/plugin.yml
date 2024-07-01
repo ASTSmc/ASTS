@@ -8,6 +8,6 @@ authors: [AS_Allen_Shih]
 contributors: [AS_Allen_Shih]
 description: ASTS自製插件
 website: https://asts.tw/
-depend: []
-softdepend: [floodgate]
+depend: [floodgate]
+softdepend: []
 loadbefore: [floodgate]

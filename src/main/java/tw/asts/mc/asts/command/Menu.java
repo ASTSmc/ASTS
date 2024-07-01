@@ -13,6 +13,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.Plugin;
+import org.geysermc.cumulus.form.SimpleForm;
+import org.geysermc.floodgate.api.FloodgateApi;
 import org.jetbrains.annotations.NotNull;
 import org.bukkit.inventory.InventoryHolder;
 import tw.asts.mc.asts.*;
@@ -37,6 +39,12 @@ public final class Menu implements BasicCommand {
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
         if (stack.getExecutor() == null || stack.getExecutor().getType() != EntityType.PLAYER) {
             stack.getSender().sendMessage(text.miniMessageComponent(text.miniMessage(BasicConfig.prefix("選單") + "只有玩家可以使用此指令！")));
+            return;
+        }
+        FloodgateApi floodgateApi = FloodgateApi.getInstance();
+        if (floodgateApi.isFloodgatePlayer(stack.getExecutor().getUniqueId())) {
+            MenuBedrock menuBedrock = new MenuBedrock(stack.getSender(), args, configMenu);
+            floodgateApi.sendForm(stack.getExecutor().getUniqueId(), menuBedrock.getForm());
             return;
         }
         MenuInventory menuInventory = new MenuInventory(stack.getSender(), args, configMenu);
@@ -221,5 +229,103 @@ final class MenuInventory implements InventoryHolder {
             topGlass.setItemMeta(topMeta);
             inventory.setItem(0, topGlass);
         }
+    }
+}
+final class MenuBedrock {
+    private SimpleForm.Builder form = SimpleForm.builder();
+    private YamlConfiguration configMenu;
+    public MenuBedrock(@NotNull CommandSender sender, @NotNull String[] args, YamlConfiguration configMenu) {
+        this.configMenu = configMenu;
+        form.title("§6[§4ASTS§6]§9伺服器§5選單");
+        setForm(sender, args);
+    }
+
+    public SimpleForm getForm() {
+        return form.build();
+    }
+
+    public void setForm(@NotNull CommandSender sender, @NotNull String[] args) {
+        // 沒有該選單
+        if (!configMenu.contains("menu." + String.join(".", args) + ".default")) {
+            return;
+        }
+        else if (args.length == 0) {
+            form.content("請選擇類別");
+        }
+        else {
+            String name = "§6選單";
+            for (int i = 0; i < args.length; i++) {
+                if (configMenu.isList("menu." + String.join(".", Arrays.copyOfRange(args, 0, i)) + ".default")) {
+                    List<?> menuItems = configMenu.getList("menu." + String.join(".", Arrays.copyOfRange(args, 0, i)) + ".default");
+                    int itemsCount = menuItems.size();
+                    //
+                    for (int j = 0; j < itemsCount; j++) {
+                        Map<?, ?> menuItem = (Map<?, ?>) menuItems.get(j);
+                        if (menuItem.containsKey("menu")) {
+                            String menuPath = (String) menuItem.get("menu");
+                            if (String.join(".", args).startsWith(menuPath)) {
+                                name += ">" + (String) menuItem.get("name");
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            form.content(name);
+        }
+        // 特殊類型
+        if (configMenu.isString("menu." + String.join(".", args) + ".default")) {
+            String[] type = configMenu.getString("menu." + String.join(".", args) + ".default").split("\\.");
+            if (type.length != 2) {
+                return;
+            }
+            // 在線玩家
+            else if (type[0].equals("player")) {
+                List<Player> players = sender.getServer().getOnlinePlayers().stream().filter(p -> !p.getName().equals(sender.getName())).collect(Collectors.toList());
+                if (players.size() == 0) {
+                    form.button("§c沒有可用的玩家！");
+                }
+                for (int i = 0; i < players.size(); i++) {
+                    String command = type[1].replaceAll("%player%", players.get(i).getName());
+                    form.button(players.get(i).getName() + "\n/" + command);
+                }
+            }
+            else {
+                return;
+            }
+        }
+        // 一般選單
+        else if (configMenu.isList("menu." + String.join(".", args) + ".default")) {
+            List<?> menuItems = configMenu.getList("menu." + String.join(".", args) + ".default");
+            if (menuItems == null) return;
+            for (int i = 0; i < menuItems.size(); i++) {
+                if (!(menuItems.get(i) instanceof Map)) continue;
+                Map<?, ?> menuItem = (Map<?, ?>) menuItems.get(i);
+                String name = (String) menuItem.get("name");
+                String command = null;
+                if (menuItem.containsKey("cmd")) {
+                    command = (String) menuItem.get("cmd");
+                } else if (menuItem.containsKey("menu")) {
+                    String menuPath = (String) menuItem.get("menu");
+                    command = "menu " + menuPath.replaceAll("\\.", " ");
+                }
+                form.button(name + "\n/" + command);
+            }
+        }
+        if (args.length != 0) {
+            form.button("返回主選單");
+        }
+        form.validResultHandler(response -> {
+            if (response == null) return;
+            String[] result = response.clickedButton().text().split("\n");
+            String command = result[result.length - 1].substring(1);
+            String commandName = command.split(" ")[0];
+            if (sender.getServer().getCommandMap().getCommand(commandName) != null) {
+                sender.getServer().dispatchCommand(sender, command);
+            }
+            else if (commandName.equals("返回主選單".substring(1))) {
+                sender.getServer().dispatchCommand(sender, "menu");
+            }
+        });
     }
 }

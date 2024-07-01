@@ -1,5 +1,8 @@
 package tw.asts.mc.asts.command;
 
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import org.bukkit.Location;
@@ -19,13 +22,15 @@ public final class Rtp implements BasicCommand {
     private int radiusDefault;
     private int radiusFar;
     private int cooldownTime = 10;
+    private Plugin plugin;
     private Map<String, Long> cooldowns = new HashMap<>();
 
-    public Rtp(FileConfiguration config) {
+    public Rtp(FileConfiguration config, Plugin plugin) {
         this.disabledWorlds = config.getStringList("rtp.disable.worlds");
         this.disabledRadiusFar = config.getBoolean("rtp.disable.far");
         this.radiusDefault = config.getInt("rtp.radius.default");
         this.radiusFar = config.getInt("rtp.radius.far");
+        this.plugin = plugin;
     }
 
     @Override
@@ -34,12 +39,10 @@ public final class Rtp implements BasicCommand {
         if (stack.getExecutor() == null || stack.getExecutor().getType() != EntityType.PLAYER) {
             stack.getSender().sendMessage(text.miniMessageComponent(text.miniMessage(BasicConfig.prefix("隨機傳送") + "只有玩家可以使用此指令！")));
             return;
-        }
-        else if (disabledWorlds.contains(stack.getExecutor().getWorld().getName())) {
+        } else if (disabledWorlds.contains(stack.getExecutor().getWorld().getName())) {
             stack.getSender().sendMessage(text.miniMessageComponent(text.miniMessage(BasicConfig.prefix("隨機傳送") + "此世界禁用了隨機傳送！")));
             return;
-        }
-        else if (args.length > 1) {
+        } else if (args.length > 1) {
             stack.getSender().sendMessage(text.miniMessageComponent(text.miniMessage(BasicConfig.prefix("隨機傳送") + "請輸入正確的參數！")));
             return;
         }
@@ -49,15 +52,13 @@ public final class Rtp implements BasicCommand {
             String arg = args[0];
             if (arg.equals("cave")) {
                 minY = -60;
-            }
-            else if (arg.equals("far")) {
+            } else if (arg.equals("far")) {
                 if (disabledRadiusFar) {
                     stack.getSender().sendMessage(text.miniMessageComponent(text.miniMessage(BasicConfig.prefix("隨機傳送") + "遠距傳送已被禁用！")));
                     return;
                 }
                 max = radiusFar;
-            }
-            else {
+            } else {
                 stack.getSender().sendMessage(text.miniMessageComponent(text.miniMessage(BasicConfig.prefix("隨機傳送") + "請輸入正確的參數！")));
                 return;
             }
@@ -72,51 +73,49 @@ public final class Rtp implements BasicCommand {
         if (world.getEnvironment() == World.Environment.NETHER) {
             minY = 32;
         }
-        // 固體且不安全的方塊
-        List<Material> unsafeBlocks = List.of(Material.CACTUS, Material.COBWEB, Material.MAGMA_BLOCK, Material.SWEET_BERRY_BUSH);
-        while (stack.getExecutor().isValid()) {
-            int x = (int) (Math.random() * max * 2) - max;
-            int z = (int) (Math.random() * max * 2) - max;
-            int y = world.getHighestBlockYAt(x, z);
-            if (y < minY) {
-                continue;
-            }
-            else if (world.getEnvironment() == World.Environment.NETHER) {
-                minY = 32;
-                while (y >= minY) {
-                    y--;
-                    if (world.getBlockAt(x, y + 1, z).getType().isAir() && world.getBlockAt(x, y + 2, z).getType().isAir()) {
-                        break;
+        int finalMinY = minY;
+        int finalMax = max;
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                List<Material> unsafeBlocks = List.of(Material.CACTUS, Material.COBWEB, Material.MAGMA_BLOCK, Material.SWEET_BERRY_BUSH);
+                boolean teleported = false;
+                while (!teleported && stack.getExecutor().isValid()) {
+                    int x = (int) (Math.random() * finalMax * 2) - finalMax;
+                    int z = (int) (Math.random() * finalMax * 2) - finalMax;
+                    int y = world.getHighestBlockYAt(x, z);
+
+                    if (y < finalMinY) continue;
+
+                    if (world.getEnvironment() == World.Environment.NETHER || (args.length == 1 && args[0].equals("cave"))) {
+                        while (y >= finalMinY) {
+                            y--;
+                            if (world.getBlockAt(x, y + 1, z).getType().isAir() && world.getBlockAt(x, y + 2, z).getType().isAir()) {
+                                break;
+                            }
+                        }
+                        if (y < finalMinY) continue;
                     }
-                }
-                if (y < minY) {
-                    continue;
-                }
-            }
-            else if (args.length == 1 && args[0].equals("cave")) {
-                y = world.getHighestBlockYAt(x, z);
-                while (y >= minY - 1) {
-                    y--;
-                    if (world.getBlockAt(x, y + 1, z).getType().isAir() && world.getBlockAt(x, y + 2, z).getType().isAir()) {
-                        break;
+
+                    Location blockLoc = new Location(world, x, y, z);
+                    if (!world.getBlockAt(blockLoc).getType().isSolid() || unsafeBlocks.contains(world.getBlockAt(blockLoc).getType())) {
+                        continue;
                     }
+
+                    Location teleportLoc = new Location(world, x + 0.5, y + 1, z + 0.5);
+                    String locStr = x + ", " + y + ", " + z;
+
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            stack.getExecutor().sendMessage(text.miniMessageComponent(text.miniMessage(BasicConfig.prefix("隨機傳送") + "正在把您傳送至 " + locStr + " ...")));
+                            stack.getExecutor().teleport(teleportLoc);
+                        }
+                    }.runTask(plugin);
+                    teleported = true;
                 }
-                if (y < minY) {
-                    continue;
-                }
             }
-            Location blockLoc = new Location(world, x, y, z);
-            if (!world.getType(blockLoc).isSolid() && !world.getType(blockLoc).isCompostable()) {
-                continue;
-            }
-            else if (unsafeBlocks.contains(world.getType(blockLoc))) {
-                continue;
-            }
-            Location teleportLoc = new Location(world, x + 0.5, y + 1, z + 0.5);
-            stack.getExecutor().sendMessage(text.miniMessageComponent(text.miniMessage(BasicConfig.prefix("隨機傳送") + "正在把您傳送至 " + x + ", " + (y + 1) + ", " + z + "...")));
-            stack.getExecutor().teleport(teleportLoc);
-            break;
-        }
+        }.runTaskAsynchronously(plugin);
     }
     public @NotNull Collection<String> suggest(@NotNull CommandSourceStack stack, @NotNull String[] args) {
         if (args.length <= 1) {
