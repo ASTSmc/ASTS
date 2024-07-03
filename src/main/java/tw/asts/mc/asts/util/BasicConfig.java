@@ -1,4 +1,4 @@
-package tw.asts.mc.asts;
+package tw.asts.mc.asts.util;
 
 public final class BasicConfig {
     public static final String name = "§6[§4ASTS§6]§eAllen§a跨平台§b插件§f伺服器§r";

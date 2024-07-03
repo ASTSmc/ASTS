@@ -6,7 +6,8 @@ import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
-import tw.asts.mc.asts.*;
+import tw.asts.mc.asts.util.BasicConfig;
+import tw.asts.mc.asts.util.text;
 
 import java.util.List;
 import java.util.Collection;

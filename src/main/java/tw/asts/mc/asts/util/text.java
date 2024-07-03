@@ -1,4 +1,4 @@
-package tw.asts.mc.asts;
+package tw.asts.mc.asts.util;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;

@@ -17,7 +17,8 @@ import org.geysermc.cumulus.form.SimpleForm;
 import org.geysermc.floodgate.api.FloodgateApi;
 import org.jetbrains.annotations.NotNull;
 import org.bukkit.inventory.InventoryHolder;
-import tw.asts.mc.asts.*;
+import tw.asts.mc.asts.util.BasicConfig;
+import tw.asts.mc.asts.util.text;
 
 import java.io.File;
 import java.util.Arrays;
@@ -34,6 +35,14 @@ public final class Menu implements BasicCommand {
         plugin.saveResource("menu.yml", false);
         fileMenu = new File(plugin.getDataFolder(), "menu.yml");
         configMenu = YamlConfiguration.loadConfiguration(fileMenu);
+    }
+    public void reload() {
+        try {
+            configMenu = YamlConfiguration.loadConfiguration(fileMenu);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {

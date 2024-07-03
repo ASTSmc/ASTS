@@ -1,6 +1,5 @@
 package tw.asts.mc.asts.command;
 
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -11,7 +10,8 @@ import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
-import tw.asts.mc.asts.*;
+import tw.asts.mc.asts.util.BasicConfig;
+import tw.asts.mc.asts.util.text;
 
 import java.util.*;
 

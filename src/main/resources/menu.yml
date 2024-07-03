@@ -110,18 +110,18 @@ menu:
       default:
         - name: "開啟側邊資訊"
           item: "lime_dye"
-          cmd: "asts sb on"
+          cmd: "asts sb true"
         - name: "關閉側邊資訊"
           item: "red_dye"
-          cmd: "asts sb off"
+          cmd: "asts sb false"
     mob:
       default:
         - name: "開啟怪物攻擊"
           item: "lime_dye"
-          cmd: "asts mob on"
+          cmd: "asts mob true"
         - name: "關閉怪物攻擊"
           item: "red_dye"
-          cmd: "asts mob off"
+          cmd: "asts mob false"
   shop:
     default:
       - name: "買賣物品"
