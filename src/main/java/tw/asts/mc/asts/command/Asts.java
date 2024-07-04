@@ -40,7 +40,7 @@ public final class Asts implements BasicCommand {
             stack.getSender().sendMessage(text.miniMessageComponent(text.miniMessage(BasicConfig.name + "\n§cs只有玩家可以使用此指令！")));
             return;
         }
-        else if (args[0].equals("mob") || args[0].equals("sb")) {
+        else if (args[0].equals("mob") || args[0].equals("sb") || args[0].equals("inv")) {
             if (args.length == 1) {
                 stack.getSender().sendMessage(text.miniMessageComponent(text.miniMessage("§c請輸入子指令")));
                 return;
