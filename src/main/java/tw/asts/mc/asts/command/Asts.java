@@ -129,9 +129,6 @@ public final class Asts implements BasicCommand {
                 userConfig.reload(save);
                 menu.reload();
                 stack.getSender().sendMessage(text.miniMessageComponent(text.miniMessage("§a重載設定檔成功")));
-            }
-            else {
-                stack.getSender().sendMessage(text.miniMessageComponent(text.miniMessage("§c未知子指令")));
                 return;
             }
         }
