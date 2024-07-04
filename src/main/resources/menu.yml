@@ -100,12 +100,16 @@ menu:
     default:
       - name: "側邊資訊"
         item: "book"
-        desc: "顯示側邊資訊"
+        desc: "調整是否開啟側邊資訊"
         menu: "asts.sb"
       - name: "怪物攻擊"
         item: "iron_sword"
-        desc: "顯示怪物攻擊"
+        desc: "調整小怪是否怪擊"
         menu: "asts.mob"
+      - name: "背包自動收集"
+        item: "chest"
+        desc: "調整方塊掉落物是否直接收集到背包"
+        menu: "asts.inv"
     sb:
       default:
         - name: "開啟側邊資訊"
@@ -122,6 +126,14 @@ menu:
         - name: "關閉怪物攻擊"
           item: "red_dye"
           cmd: "asts mob false"
+    inv:
+      default:
+        - name: "開啟背包自動收集"
+          item: "lime_dye"
+          cmd: "asts inv true"
+        - name: "關閉背包自動收集"
+          item: "red_dye"
+          cmd: "asts inv false"
   shop:
     default:
       - name: "買賣物品"
