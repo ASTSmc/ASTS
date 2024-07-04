@@ -2,6 +2,7 @@ package tw.asts.mc.asts.event;
 
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Container;
+import org.bukkit.block.ShulkerBox;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import tw.asts.mc.asts.util.UserConfig;
@@ -22,7 +23,7 @@ public class AutoInvPick {
         Collection<ItemStack> blockItems = event.getBlock().getDrops(event.getPlayer().getInventory().getItemInMainHand(), event.getPlayer());
         BlockState blockState = event.getBlock().getState();
         int experience = event.getExpToDrop();
-        if (blockState instanceof Container) {
+        if (blockState instanceof Container && !(blockState instanceof ShulkerBox)) {
             Container container = (Container) blockState;
             Arrays.stream(container.getInventory().getStorageContents()).toList().forEach(itemStack -> {
                 if (itemStack != null) {
