@@ -8,6 +8,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import tw.asts.mc.asts.command.Command;
 import tw.asts.mc.asts.event.Event;
+import tw.asts.mc.asts.recipe.Recipe;
 import tw.asts.mc.asts.util.BasicConfig;
 import tw.asts.mc.asts.util.Placeholder;
 import tw.asts.mc.asts.util.UserConfig;
@@ -43,6 +44,7 @@ public final class ASTS extends JavaPlugin implements Listener {
             getLogger().log(Level.INFO, "正在註冊PlaceholderAPI");
             new Placeholder(this, userConfig).register();
         }
+        new Recipe(this);
         getLogger().log(Level.INFO, "插件已啟動");
     }
 
