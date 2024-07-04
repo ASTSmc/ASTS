@@ -9,6 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import tw.asts.mc.asts.command.Command;
 import tw.asts.mc.asts.event.Event;
 import tw.asts.mc.asts.util.BasicConfig;
+import tw.asts.mc.asts.util.Placeholder;
 import tw.asts.mc.asts.util.UserConfig;
 import tw.asts.mc.asts.util.text;
 
@@ -38,7 +39,10 @@ public final class ASTS extends JavaPlugin implements Listener {
         pluginManager.registerEvents(this, this);
         command = new Command(this, pluginManager, config, userConfig);
         event = new Event(this, pluginManager, userConfig);
-
+        if (pluginManager.getPlugin("PlaceholderAPI") != null) {
+            getLogger().log(Level.INFO, "正在註冊PlaceholderAPI");
+            new Placeholder(this, userConfig).register();
+        }
         getLogger().log(Level.INFO, "插件已啟動");
     }
 

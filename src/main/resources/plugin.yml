@@ -9,5 +9,5 @@ contributors: [AS_Allen_Shih]
 description: ASTS自製插件
 website: https://asts.tw/
 depend: [floodgate]
-softdepend: []
-loadbefore: [floodgate]
+softdepend: [PlaceholderAPI]
+loadbefore: []

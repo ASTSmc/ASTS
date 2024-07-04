@@ -58,7 +58,12 @@ public final class Asts implements BasicCommand {
             }
             else if (args[0].equals("sb")) {
                 setName = "scoreboard";
-                setType = "計分板";
+                setType = "側邊資訊";
+                setDefault = true;
+            }
+            else if (args[0].equals("inv")) {
+                setName = "auto_inv_pick";
+                setType = "自動撿取物品";
                 setDefault = true;
             }
             String set = setName + "." + stack.getExecutor().getName();
@@ -135,14 +140,14 @@ public final class Asts implements BasicCommand {
     }
     @Override
     public @NotNull Collection<String> suggest(@NotNull CommandSourceStack stack, @NotNull String[] args) {
-        List<String> arg0 = List.of("mob", "sb");
+        List<String> arg0 = List.of("mob", "sb", "inv");
         if (stack.getSender().hasPermission(PluginPermission.admin())) {
-            arg0 = List.of("mob", "sb", "admin");
+            arg0 = List.of("mob", "sb", "inv", "admin");
         }
         if (args.length == 0) {
             return arg0;
         }
-        if (args[0].equals("mob") || args[0].equals("sb")) {
+        if (args[0].equals("mob") || args[0].equals("sb") || args[0].equals("inv")) {
             List<String> arg1 = List.of("true", "false", "toggle");
             if (args.length == 1) {
                 return arg1;
