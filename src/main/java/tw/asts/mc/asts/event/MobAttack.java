@@ -9,7 +9,7 @@ import java.util.List;
 
 public class MobAttack {
 
-    private UserConfig userConfig;
+    private final UserConfig userConfig;
 
     public MobAttack(UserConfig userConfig) {
         this.userConfig = userConfig;

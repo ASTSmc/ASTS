@@ -17,13 +17,13 @@ import java.util.*;
 
 public final class Rtp implements BasicCommand {
 
-    private List<String> disabledWorlds;
-    private boolean disabledRadiusFar;
-    private int radiusDefault;
-    private int radiusFar;
-    private int cooldownTime = 10;
-    private Plugin plugin;
-    private Map<String, Long> cooldowns = new HashMap<>();
+    private final List<String> disabledWorlds;
+    private final boolean disabledRadiusFar;
+    private final int radiusDefault;
+    private final int radiusFar;
+    private final int cooldownTime = 10;
+    private final Plugin plugin;
+    private final Map<String, Long> cooldowns = new HashMap<>();
 
     public Rtp(FileConfiguration config, Plugin plugin) {
         this.disabledWorlds = config.getStringList("rtp.disable.worlds");

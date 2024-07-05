@@ -10,11 +10,9 @@ import org.bukkit.plugin.PluginManager;
 import tw.asts.mc.asts.util.UserConfig;
 
 public class Event implements Listener {
-    private UserConfig userConfig;
-    private MobAttack mobAttack;
-    private AutoInvPick autoInvPick;
+    private final MobAttack mobAttack;
+    private final AutoInvPick autoInvPick;
     public Event(Plugin plugin, PluginManager pluginManager, UserConfig userConfig) {
-        this.userConfig = userConfig;
         mobAttack = new MobAttack(userConfig);
         autoInvPick = new AutoInvPick(userConfig);
         pluginManager.registerEvents(this, plugin);

@@ -15,10 +15,11 @@ import java.util.stream.Collectors;
 
 public final class Wtp implements BasicCommand {
 
-    private List<String> disabledWorlds;
+    private final List<String> disabledWorlds;
 
     public Wtp(FileConfiguration config) {
-        this.disabledWorlds = config.getStringList("wtp.disable.worlds") == null ? List.of() : config.getStringList("wtp.disable.worlds");
+        config.getStringList("wtp.disable.worlds");
+        this.disabledWorlds = config.getStringList("wtp.disable.worlds");
     }
 
     @Override

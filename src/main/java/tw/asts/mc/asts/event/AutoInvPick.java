@@ -12,8 +12,8 @@ import java.util.*;
 import java.util.stream.Stream;
 
 public class AutoInvPick {
-    private UserConfig userConfig;
-    private List<Material> dropBlock;
+    private final UserConfig userConfig;
+    private final List<Material> dropBlock;
     public AutoInvPick(UserConfig userConfig) {
         this.userConfig = userConfig;
         List<String> colors = List.of("white", "light_gray", "gray", "black", "brown", "red", "orange", "yellow", "lime", "green", "cyan", "light_blue", "blue", "purple", "magenta", "pink");

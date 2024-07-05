@@ -18,10 +18,10 @@ import tw.asts.mc.asts.util.text;
 
 public final class Asts implements BasicCommand {
 
-    private Plugin plugin;
+    private final Plugin plugin;
     private FileConfiguration config;
-    private UserConfig userConfig;
-    private Menu menu;
+    private final UserConfig userConfig;
+    private final Menu menu;
 
     public Asts(Plugin plugin, FileConfiguration config, UserConfig userConfig, Menu menu) {
         this.plugin = plugin;

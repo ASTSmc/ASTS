@@ -8,6 +8,7 @@ import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.plugin.Plugin;
 
 import java.util.List;
+import java.util.Objects;
 
 public class DyeSwitch {
     public DyeSwitch(Plugin plugin, String itemName) {
@@ -19,7 +20,7 @@ public class DyeSwitch {
                 continue;
             }
             List<String> otherColors = colors.stream().filter(c -> !c.equals(color)).toList();
-            List<Material> otherMaterial = otherColors.stream().map(c -> Material.getMaterial((c + "_" + itemName).toUpperCase())).filter(m -> m != null).toList();
+            List<Material> otherMaterial = otherColors.stream().map(c -> Material.getMaterial((c + "_" + itemName).toUpperCase())).filter(Objects::nonNull).toList();
             for (int i = 1; i < 9; i++) {
                 int finalI = i;
                 ShapelessRecipe recipe = new ShapelessRecipe(new NamespacedKey(plugin, "dye-switch_" + color + "_" + itemName + "_" + finalI), new ItemStack(colorMaterial, finalI));
