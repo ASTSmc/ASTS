@@ -45,9 +45,6 @@ public final class MenuClick implements Listener {
                 event.getWhoClicked().closeInventory();
                 event.getWhoClicked().sendMessage(text.miniMessageComponent(text.miniMessage("§6[§4ASTS§6]§eAllen§a跨平台§b插件§f伺服器§r - §6選單已關閉§r")));
             }
-            else {
-                event.getWhoClicked().getServer().getLogger().log(Level.INFO, "Command not found: " + commandName);
-            }
         }
     }
     @EventHandler

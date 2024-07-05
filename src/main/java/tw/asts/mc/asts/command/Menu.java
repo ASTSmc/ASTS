@@ -50,11 +50,13 @@ public final class Menu implements BasicCommand {
             stack.getSender().sendMessage(text.miniMessageComponent(text.miniMessage(BasicConfig.prefix("選單") + "只有玩家可以使用此指令！")));
             return;
         }
-        FloodgateApi floodgateApi = FloodgateApi.getInstance();
-        if (floodgateApi.isFloodgatePlayer(stack.getExecutor().getUniqueId())) {
-            MenuBedrock menuBedrock = new MenuBedrock(stack.getSender(), args, configMenu);
-            floodgateApi.sendForm(stack.getExecutor().getUniqueId(), menuBedrock.getForm());
-            return;
+        if (stack.getExecutor().getServer().getPluginManager().getPlugin("floodgate") != null && stack.getExecutor().getServer().getPluginManager().isPluginEnabled("floodgate")) {
+            FloodgateApi floodgateApi = FloodgateApi.getInstance();
+            if (floodgateApi.isFloodgatePlayer(stack.getExecutor().getUniqueId())) {
+                MenuBedrock menuBedrock = new MenuBedrock(stack.getSender(), args, configMenu);
+                floodgateApi.sendForm(stack.getExecutor().getUniqueId(), menuBedrock.getForm());
+                return;
+            }
         }
         MenuInventory menuInventory = new MenuInventory(stack.getSender(), args, configMenu);
         String playerName = stack.getExecutor().getName();
@@ -97,7 +99,7 @@ final class MenuInventory implements InventoryHolder {
             // 在線玩家
             else if (type[0].equals("player")) {
                 List<Player> players = server.getOnlinePlayers().stream().filter(p -> !p.getName().equals(sender.getName())).collect(Collectors.toList());
-                if (players.size() == 0) {
+                if (players.isEmpty()) {
                     ItemStack item = new ItemStack(Material.BARRIER, 1);
                     ItemMeta itemMeta = item.getItemMeta();
                     itemMeta.displayName(text.miniMessageComponent(text.miniMessage("§c沒有可用的玩家！")));
@@ -263,25 +265,24 @@ final class MenuBedrock {
             form.content("請選擇類別");
         }
         else {
-            String name = "§6選單";
+            StringBuilder name = new StringBuilder("§6選單");
             for (int i = 0; i < args.length; i++) {
                 if (configMenu.isList("menu." + String.join(".", Arrays.copyOfRange(args, 0, i)) + ".default")) {
                     List<?> menuItems = configMenu.getList("menu." + String.join(".", Arrays.copyOfRange(args, 0, i)) + ".default");
-                    int itemsCount = menuItems.size();
-                    //
-                    for (int j = 0; j < itemsCount; j++) {
-                        Map<?, ?> menuItem = (Map<?, ?>) menuItems.get(j);
+                    // 計算選單位置
+                    for (Object item : menuItems) {
+                        Map<?, ?> menuItem = (Map<?, ?>) item;
                         if (menuItem.containsKey("menu")) {
                             String menuPath = (String) menuItem.get("menu");
                             if (String.join(".", args).startsWith(menuPath)) {
-                                name += ">" + (String) menuItem.get("name");
+                                name.append(">").append((String) menuItem.get("name"));
                                 break;
                             }
                         }
                     }
                 }
             }
-            form.content(name);
+            form.content(name.toString());
         }
         // 特殊類型
         if (configMenu.isString("menu." + String.join(".", args) + ".default")) {
@@ -292,12 +293,12 @@ final class MenuBedrock {
             // 在線玩家
             else if (type[0].equals("player")) {
                 List<Player> players = sender.getServer().getOnlinePlayers().stream().filter(p -> !p.getName().equals(sender.getName())).collect(Collectors.toList());
-                if (players.size() == 0) {
+                if (players.isEmpty()) {
                     form.button("§c沒有可用的玩家！");
                 }
-                for (int i = 0; i < players.size(); i++) {
-                    String command = type[1].replaceAll("%player%", players.get(i).getName());
-                    form.button(players.get(i).getName() + "\n/" + command);
+                for (Player player : players) {
+                    String command = type[1].replaceAll("%player%", player.getName());
+                    form.button(player.getName() + "\n/" + command);
                 }
             }
             else {
@@ -308,9 +309,9 @@ final class MenuBedrock {
         else if (configMenu.isList("menu." + String.join(".", args) + ".default")) {
             List<?> menuItems = configMenu.getList("menu." + String.join(".", args) + ".default");
             if (menuItems == null) return;
-            for (int i = 0; i < menuItems.size(); i++) {
-                if (!(menuItems.get(i) instanceof Map)) continue;
-                Map<?, ?> menuItem = (Map<?, ?>) menuItems.get(i);
+            for (Object item : menuItems) {
+                if (!(item instanceof Map)) continue;
+                Map<?, ?> menuItem = (Map<?, ?>) item;
                 String name = (String) menuItem.get("name");
                 String command = null;
                 if (menuItem.containsKey("cmd")) {
