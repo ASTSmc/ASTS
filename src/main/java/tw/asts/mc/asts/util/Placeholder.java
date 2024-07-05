@@ -42,19 +42,19 @@ public class Placeholder extends PlaceholderExpansion {
         else if (identifier.startsWith("user_")) {
             String username = player.getName();
             if (identifier.equals("user_mob_attack")) {
-                return userConfig.config.getBoolean("mob_attack." + username) ? "§a已開啟§r" : "§c已關閉§r";
+                return userConfig.config.getBoolean("mob_attack." + username) ? "§a開啟§r" : "§c關閉§r";
             }
             else if (identifier.equals("user_scoreboard")) {
                 if (!userConfig.config.contains("scoreboard." + username)) {
                     return "§a已開啟§r";
                 }
-                return userConfig.config.getBoolean("scoreboard." + username) ? "§a已開啟§r" : "§c已關閉§r";
+                return userConfig.config.getBoolean("scoreboard." + username) ? "§a開啟§r" : "§c關閉§r";
             }
             else if (identifier.equals("user_auto_inv_pick")) {
                 if (!userConfig.config.contains("auto_inv_pick." + username)) {
-                    return "§a已開啟§r";
+                    return "§a背包§r";
                 }
-                return userConfig.config.getBoolean("auto_inv_pick." + username) ? "§a已開啟§r" : "§c已關閉§r";
+                return userConfig.config.getBoolean("auto_inv_pick." + username) ? "§a背包§r" : "§c掉落§r";
             }
         }
         return null;
