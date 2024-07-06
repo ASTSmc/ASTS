@@ -3,11 +3,15 @@ package tw.asts.mc.asts.util;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;
+import org.geysermc.geyser.api.GeyserApi;
+
+import java.util.Arrays;
 
 public class Placeholder extends PlaceholderExpansion {
 
-    private Plugin plugin;
-    private UserConfig userConfig;
+    private final Plugin plugin;
+    private final UserConfig userConfig;
+    private final String bedrockVersion = Arrays.stream(GeyserApi.api().supportedBedrockVersions().getLast().versionString().split("/")).toList().getLast();
 
     public Placeholder(Plugin plugin, UserConfig userConfig) {
         this.plugin = plugin;
@@ -55,6 +59,11 @@ public class Placeholder extends PlaceholderExpansion {
                     return "§a背包§r";
                 }
                 return userConfig.config.getBoolean("auto_inv_pick." + username) ? "§a背包§r" : "§c掉落§r";
+            }
+        }
+        else if (identifier.equals("bedrock")) {
+            if (plugin.getServer().getPluginManager().isPluginEnabled("Geyser-Spigot")) {
+                return bedrockVersion;
             }
         }
         return null;
