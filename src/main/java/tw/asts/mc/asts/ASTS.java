@@ -12,6 +12,7 @@ import tw.asts.mc.asts.recipe.Recipe;
 import tw.asts.mc.asts.util.BasicConfig;
 import tw.asts.mc.asts.util.Placeholder;
 import tw.asts.mc.asts.util.UserConfig;
+import tw.asts.mc.asts.util.discordsrv.DiscordSRVWeb;
 import tw.asts.mc.asts.util.text;
 
 import java.util.List;
@@ -33,6 +34,14 @@ public final class ASTS extends JavaPlugin implements Listener {
         config.addDefault("rtp.disable.far", false);
         config.addDefault("rtp.radius.default", 10000);
         config.addDefault("rtp.radius.far", 100000);
+        config.addDefault("discord.enable", false);
+        config.addDefault("discord.port", 8080);
+        config.addDefault("discord.host", "auth.asts.tw");
+        config.addDefault("discord.https", true);
+        config.addDefault("discord.bot", "機器人名稱");
+        config.addDefault("discord.home_page", "https://asts.tw/");
+        config.addDefault("discord.client_id", "Discord應用程式ID");
+        config.addDefault("discord.client_secret", "Discord應用程式密鑰");
         config.options().copyDefaults(true);
         saveConfig();
         userConfig = new UserConfig(this);
@@ -43,6 +52,10 @@ public final class ASTS extends JavaPlugin implements Listener {
         if (pluginManager.getPlugin("PlaceholderAPI") != null) {
             getLogger().log(Level.INFO, "正在註冊PlaceholderAPI");
             new Placeholder(this, userConfig).register();
+        }
+        if (config.getBoolean("discord.enable") && pluginManager.getPlugin("DiscordSRV") != null) {
+            getLogger().log(Level.INFO, "正在啟動DiscordSRV登入驗證系統");
+            new DiscordSRVWeb(this, config);
         }
         new Recipe(this);
         getLogger().log(Level.INFO, "插件已啟動");
