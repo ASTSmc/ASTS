@@ -26,6 +26,7 @@ repositories {
 
 dependencies {
     compileOnly "io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT"
+    compileOnly "org.geysermc.geyser:api:2.4.0-SNAPSHOT"
     compileOnly "org.geysermc.floodgate:api:2.2.2-SNAPSHOT"
     compileOnly "me.clip:placeholderapi:2.11.6"
     implementation "net.kyori:adventure-text-minimessage:4.17.0"
