@@ -32,7 +32,9 @@ public class AutoInvPick {
             ItemStack blockItem = new ItemStack(event.getBlock().getType(), 1);
             HashMap<Integer, ItemStack> remaining = event.getPlayer().getInventory().addItem(blockItem);
             remaining.values().forEach(item -> event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), item));
-            event.getPlayer().giveExp(experience, true);
+            if (experience > 0) {
+                event.getPlayer().giveExp(experience, true);
+            }
             return;
         }
         Collection<ItemStack> blockItems = event.getBlock().getDrops(event.getPlayer().getInventory().getItemInMainHand(), event.getPlayer());
@@ -49,6 +51,8 @@ public class AutoInvPick {
             HashMap<Integer, ItemStack> remaining = event.getPlayer().getInventory().addItem(itemStack);
             remaining.values().forEach(item -> event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), item));
         });
-        event.getPlayer().giveExp(experience, true);
+        if (experience > 0) {
+            event.getPlayer().giveExp(experience, true);
+        }
     }
 }
