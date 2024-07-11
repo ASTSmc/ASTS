@@ -46,9 +46,7 @@ public class AutoInvPick {
         }
         List<Item> items = event.getItems();
         Collection<ItemStack> blockItems = new ArrayList<>();
-        items.forEach((item) -> {
-            blockItems.add(item.getItemStack());
-        });
+        items.forEach((item) -> blockItems.add(item.getItemStack()));
         blockItems.forEach(itemStack -> {
             HashMap<Integer, ItemStack> remaining = event.getPlayer().getInventory().addItem(itemStack);
             remaining.values().forEach(item -> event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), item));
