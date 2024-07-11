@@ -5,6 +5,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDropItemEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import tw.asts.mc.asts.util.UserConfig;
 
 import java.util.*;
@@ -20,7 +21,7 @@ public class AutoInvPick {
         List<Material> normalBlock = List.of(Material.BOOKSHELF, Material.TINTED_GLASS, Material.SEA_LANTERN, Material.ENDER_CHEST, Material.BUDDING_AMETHYST, Material.PACKED_ICE, Material.BLUE_ICE, Material.ICE, Material.GLASS, Material.GLASS_PANE);
         dropBlock = Stream.concat(colorsBlock.stream().map(block -> colors.stream().map(color -> Material.getMaterial((color + "_" + block).toUpperCase())).toList()).flatMap(List::stream), normalBlock.stream()).filter(Objects::nonNull).toList();
     }
-    public void onBlockBreak(BlockBreakEvent event) {
+    public void onBlockBreak(@NotNull BlockBreakEvent event) {
         if (userConfig.config.isSet("auto_inv_pick." + event.getPlayer().getName()) && !userConfig.config.getBoolean("auto_inv_pick." + event.getPlayer().getName())) {
             return;
         }
@@ -40,7 +41,7 @@ public class AutoInvPick {
             event.getPlayer().giveExp(experience, true);
         }
     }
-    public void onBlockDropItem(BlockDropItemEvent event) {
+    public void onBlockDropItem(@NotNull BlockDropItemEvent event) {
         if (userConfig.config.isSet("auto_inv_pick." + event.getPlayer().getName()) && !userConfig.config.getBoolean("auto_inv_pick." + event.getPlayer().getName())) {
             return;
         }
