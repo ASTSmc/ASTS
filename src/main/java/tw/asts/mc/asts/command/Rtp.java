@@ -80,11 +80,12 @@ public final class Rtp implements BasicCommand {
             public void run() {
                 List<Material> unsafeBlocks = List.of(Material.CACTUS, Material.COBWEB, Material.MAGMA_BLOCK, Material.SWEET_BERRY_BUSH);
                 boolean teleported = false;
-                while (!teleported && stack.getExecutor().isValid()) {
-                    int x = (int) (Math.random() * finalMax * 2) - finalMax;
-                    int z = (int) (Math.random() * finalMax * 2) - finalMax;
+                int x = (int) (Math.random() * finalMax * 2) - finalMax;
+                int z = (int) (Math.random() * finalMax * 2) - finalMax;
+                while(!teleported && stack.getExecutor().isValid()){
+                    x+=1;
                     int y = world.getHighestBlockYAt(x, z);
-
+                    System.out.println("x: " + x + ", y: " + y + ", z: " + z);
                     if (y < finalMinY) continue;
 
                     if (world.getEnvironment() == World.Environment.NETHER || (args.length == 1 && args[0].equals("cave"))) {
