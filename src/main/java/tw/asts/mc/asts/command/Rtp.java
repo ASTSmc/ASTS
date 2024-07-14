@@ -78,13 +78,25 @@ public final class Rtp implements BasicCommand {
         new BukkitRunnable() {
             @Override
             public void run() {
+                int retry = 0;
                 List<Material> unsafeBlocks = List.of(Material.CACTUS, Material.COBWEB, Material.MAGMA_BLOCK, Material.SWEET_BERRY_BUSH);
                 boolean teleported = false;
-                while (!teleported && stack.getExecutor().isValid()) {
-                    int x = (int) (Math.random() * finalMax * 2) - finalMax;
-                    int z = (int) (Math.random() * finalMax * 2) - finalMax;
-                    int y = world.getHighestBlockYAt(x, z);
+                int x = (int) (Math.random() * finalMax * 2) - finalMax;
+                int xinit = x;
+                int z = (int) (Math.random() * finalMax * 2) - finalMax;
+                while(!teleported && stack.getExecutor().isValid()){
+                    x+=1;
+                    if (retry>256){
+                        z+=1;
+                        x = xinit;
+                        retry=0;
+                    }
 
+//
+//                    int x = (int) (Math.random() * finalMax * 2) - finalMax;
+//                    int z = (int) (Math.random() * finalMax * 2) - finalMax;
+                    retry++;
+                    int y = world.getHighestBlockYAt(x, z);
                     if (y < finalMinY) continue;
 
                     if (world.getEnvironment() == World.Environment.NETHER || (args.length == 1 && args[0].equals("cave"))) {
