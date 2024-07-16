@@ -22,11 +22,11 @@ public class Event implements Listener {
     public void onEntityTarget(EntityTargetEvent event) {
         mobAttack.onMobAttack(event);
     }
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onBlockBreak(BlockBreakEvent event) {
         autoInvPick.onBlockBreak(event);
     }
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onBlockDropItem(BlockDropItemEvent event) {
         autoInvPick.onBlockDropItem(event);
     }
