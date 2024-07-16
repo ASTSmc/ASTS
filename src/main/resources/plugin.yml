@@ -6,7 +6,7 @@ prefix: ASTS
 load: STARTUP
 authors: [AS_Allen_Shih]
 contributors: [AS_Allen_Shih, cuteebear0123]
-description: ASTS自製插件
+description: '[ASTS]自製插件'
 website: https://asts.tw/
 depend: []
 softdepend: [floodgate, PlaceholderAPI]

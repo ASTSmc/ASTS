@@ -33,7 +33,7 @@ public final class Asts implements BasicCommand {
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
         if (args.length == 0) {
             PluginMeta meta = plugin.getPluginMeta();
-            stack.getSender().sendMessage(text.miniMessageComponent(text.miniMessage(BasicConfig.name + "\n版本：" + meta.getVersion() + "\n作者：" + meta.getAuthors().stream().reduce((a, b) -> a + "、" + b).orElse("無"))));
+            stack.getSender().sendMessage(text.miniMessageComponent(text.miniMessage(BasicConfig.name + "\n" + meta.getDescription() + "\n網站：" + meta.getWebsite() + "\n版本：" + meta.getVersion() + "\n作者：" + meta.getAuthors().stream().reduce((a, b) -> a + "、" + b).orElse("無") + "\n貢獻者：" + meta.getContributors().stream().reduce((a, b) -> a + "、" + b).orElse("無"))));
             return;
         }
         else if (stack.getExecutor() == null || stack.getExecutor().getType() != EntityType.PLAYER) {
