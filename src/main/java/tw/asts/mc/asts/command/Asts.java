@@ -70,10 +70,20 @@ public final class Asts implements BasicCommand {
             if (args[1].equals("true")) {
                 userConfig.config.set(set, true);
                 stack.getSender().sendMessage(text.miniMessageComponent(text.miniMessage("§a已開啟" + setType)));
+                if (args[0].equals("sb")) {
+                    if (stack.getSender().getServer().getCommandMap().getCommand("asb") != null) {
+                        stack.getExecutor().getServer().dispatchCommand(stack.getExecutor(), "asb toggle on");
+                    }
+                }
             }
             else if (args[1].equals("false")) {
                 userConfig.config.set(set, false);
                 stack.getSender().sendMessage(text.miniMessageComponent(text.miniMessage("§a已關閉" + setType)));
+                if (args[0].equals("sb")) {
+                    if (stack.getSender().getServer().getCommandMap().getCommand("asb") != null) {
+                        stack.getExecutor().getServer().dispatchCommand(stack.getExecutor(), "asb toggle off");
+                    }
+                }
             }
             else if (args[1].equals("toggle")) {
                 if (userConfig.config.isSet(set)) {
@@ -88,7 +98,6 @@ public final class Asts implements BasicCommand {
                 }
                 if (args[0].equals("sb")) {
                     if (stack.getSender().getServer().getCommandMap().getCommand("asb") != null) {
-                        String userName = stack.getExecutor().getName();
                         if (setDefault) {
                             stack.getExecutor().getServer().dispatchCommand(stack.getExecutor(), "asb toggle off");
                         }
