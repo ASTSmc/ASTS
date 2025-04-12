@@ -1,11 +1,15 @@
 package tw.asts.mc.asts;
 
+import java.util.List;
+import java.util.logging.Level;
+
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
 import tw.asts.mc.asts.command.Command;
 import tw.asts.mc.asts.event.Event;
 import tw.asts.mc.asts.recipe.Recipe;
@@ -13,9 +17,6 @@ import tw.asts.mc.asts.util.BasicConfig;
 import tw.asts.mc.asts.util.Placeholder;
 import tw.asts.mc.asts.util.UserConfig;
 import tw.asts.mc.asts.util.text;
-
-import java.util.List;
-import java.util.logging.Level;
 
 public final class ASTS extends JavaPlugin implements Listener {
 
