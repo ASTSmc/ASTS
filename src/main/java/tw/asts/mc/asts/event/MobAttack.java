@@ -1,12 +1,13 @@
 package tw.asts.mc.asts.event;
 
+import java.util.List;
+
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.jetbrains.annotations.NotNull;
-import tw.asts.mc.asts.util.UserConfig;
 
-import java.util.List;
+import tw.asts.mc.asts.util.UserConfig;
 
 public class MobAttack {
 
@@ -19,7 +20,7 @@ public class MobAttack {
     public void onMobAttack(@NotNull EntityTargetEvent event) {
         Entity entity = event.getEntity();
         Entity target = event.getTarget();
-        if (List.of(EntityType.AXOLOTL, EntityType.STRIDER, EntityType.SNOW_GOLEM, EntityType.IRON_GOLEM, EntityType.VILLAGER, EntityType.FROG).contains(entity.getType())) {
+        if (List.of(EntityType.WOLF, EntityType.AXOLOTL, EntityType.STRIDER, EntityType.SNOW_GOLEM, EntityType.IRON_GOLEM, EntityType.VILLAGER, EntityType.FROG).contains(entity.getType())) {
             return;
         }
         else if (target == null) {
