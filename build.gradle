@@ -29,6 +29,7 @@ dependencies {
     compileOnly "org.geysermc.geyser:api:2.4.0-SNAPSHOT"
     compileOnly "org.geysermc.floodgate:api:2.2.2-SNAPSHOT"
     compileOnly "me.clip:placeholderapi:2.11.6"
+    compileOnly files('libs/Residence.jar')
     implementation "net.kyori:adventure-text-minimessage:4.17.0"
 }
 
