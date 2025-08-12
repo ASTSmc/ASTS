@@ -6,12 +6,27 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.plugin.Plugin;
+import tw.asts.mc.asts.util.Log;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
 
-public class DyeSwitch {
-    public DyeSwitch(Plugin plugin, String itemName) {
+final public class DyeSwitch {
+    public DyeSwitch(Plugin plugin) {
+        Log.get().log(Level.INFO, "正在載入染色配方");
+        addRecipe(plugin, "concrete_powder");
+        addRecipe(plugin, "concrete");
+        addRecipe(plugin, "wool");
+        addRecipe(plugin, "carpet");
+        addRecipe(plugin, "glazed_terracotta");
+        addRecipe(plugin, "bed");
+        addRecipe(plugin, "banner");
+        addRecipe(plugin, "stained_glass");
+        addRecipe(plugin, "stained_glass_pane");
+        addRecipe(plugin, "shulker_box");
+    }
+    private void addRecipe(Plugin plugin, String itemName) {
         List<String> colors = List.of("white", "orange", "magenta", "light_blue", "yellow", "lime", "pink", "gray", "light_gray", "cyan", "purple", "blue", "brown", "green", "red", "black");
         for (String color : colors) {
             Material colorDye = Material.getMaterial((color + "_dye").toUpperCase());

@@ -7,9 +7,13 @@ import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.SmokingRecipe;
 import org.bukkit.plugin.Plugin;
+import tw.asts.mc.asts.util.Log;
 
-public class Furnace {
+import java.util.logging.Level;
+
+final public class Furnace {
     public Furnace(Plugin plugin) {
+        Log.get().log(Level.INFO, "正在載入熔爐配方");
         addRecipe(plugin, Material.RAW_IRON_BLOCK, Material.IRON_BLOCK, 6.3f, 1800, true, true);
         addRecipe(plugin, Material.RAW_COPPER_BLOCK, Material.COPPER_BLOCK, 6.3f, 1800, true, true);
         addRecipe(plugin, Material.RAW_GOLD_BLOCK, Material.GOLD_BLOCK, 9.0f, 1800, true, true);

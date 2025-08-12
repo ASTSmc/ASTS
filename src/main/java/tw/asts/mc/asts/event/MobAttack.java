@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import tw.asts.mc.asts.util.UserConfig;
 
-public class MobAttack {
+final public class MobAttack {
 
     private final UserConfig userConfig;
 

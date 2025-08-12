@@ -17,12 +17,13 @@ import org.jetbrains.annotations.NotNull;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import tw.asts.mc.asts.command.menu.Inventory;
 import tw.asts.mc.asts.util.text;
 
 public final class MenuClick implements Listener {
     @EventHandler
     public void onInventoryClick(@NotNull InventoryClickEvent event) {
-        if (event.getInventory().getHolder() instanceof MenuInventory) {
+        if (event.getInventory().getHolder() instanceof Inventory) {
             event.setCancelled(true);
             ItemStack item = event.getCurrentItem();
             if (item == null || !item.getItemMeta().hasLore()) {
@@ -52,7 +53,7 @@ public final class MenuClick implements Listener {
         if (event.getHand() == EquipmentSlot.HAND && (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_AIR)) {
             Player player = event.getPlayer();
             Block block = player.getTargetBlock(null, 100);
-            if (player.getInventory().getItemInMainHand().getType() == Material.COMPASS && (block == null || block.getType() != Material.LODESTONE)) {
+            if (player.getInventory().getItemInMainHand().getType() == Material.COMPASS && block.getType() != Material.LODESTONE) {
                 event.setCancelled(true);
                 event.getPlayer().getServer().dispatchCommand(event.getPlayer(), "menu");
             }

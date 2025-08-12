@@ -7,6 +7,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -24,7 +25,8 @@ public final class ASTS extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        getLogger().log(Level.INFO, "正在啟動插件");
+        Log.init(getLogger());
+        Log.get().log(Level.INFO, "正在啟動插件");
         config = getConfig();
         config.addDefault("wtp.disable.worlds", List.of("world_nether", "world_the_end"));
         config.addDefault("rtp.disable.worlds", List.of("ASTS"));
@@ -38,20 +40,15 @@ public final class ASTS extends JavaPlugin implements Listener {
         pluginManager.registerEvents(this, this);
         command = new Command(this, pluginManager, config, userConfig);
         event = new Event(this, pluginManager, userConfig);
-        if (pluginManager.getPlugin("PlaceholderAPI") != null) {
-            getLogger().log(Level.INFO, "正在註冊PlaceholderAPI");
-            new Placeholder(this, userConfig).register();
-        }
-        if (pluginManager.getPlugin("Residence") != null) {
-            new LightBlock(this);
-        }
         new Recipe(this);
-        getLogger().log(Level.INFO, "插件已啟動");
+        ExternalClass.plugin(this, "PlaceholderAPI", "tw.asts.mc.asts.util.Placeholder", List.of(Plugin.class, UserConfig.class), List.of(this, userConfig)).runMethod("register");
+        ExternalClass.plugin(this, "Residence", "tw.asts.mc.asts.util.LightBlock", List.of(Plugin.class), List.of(this));
+        Log.get().log(Level.INFO, "插件已啟動");
     }
 
     @Override
     public void onDisable() {
-        getLogger().log(Level.INFO, "關閉插件");
+        Log.get().log(Level.INFO, "關閉插件");
     }
 
     @EventHandler

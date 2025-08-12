@@ -6,12 +6,15 @@ import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
+import tw.asts.mc.asts.util.Log;
 import tw.asts.mc.asts.util.UserConfig;
 
 import java.util.List;
+import java.util.logging.Level;
 
 public final class Command {
     public Command(Plugin plugin, PluginManager pluginManager, FileConfiguration config, UserConfig userConfig) {
+        Log.get().log(Level.INFO, "正在載入指令");
         pluginManager.registerEvents(new MenuClick(), plugin);
         Menu menu = new Menu(plugin);
         LifecycleEventManager<Plugin> manager = plugin.getLifecycleManager();

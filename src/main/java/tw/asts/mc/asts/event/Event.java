@@ -8,12 +8,16 @@ import org.bukkit.event.block.BlockDropItemEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
+import tw.asts.mc.asts.util.Log;
 import tw.asts.mc.asts.util.UserConfig;
 
-public class Event implements Listener {
+import java.util.logging.Level;
+
+final public class Event implements Listener {
     private final MobAttack mobAttack;
     private final AutoInvPick autoInvPick;
     public Event(Plugin plugin, PluginManager pluginManager, UserConfig userConfig) {
+        Log.get().log(Level.INFO, "正在載入事件");
         mobAttack = new MobAttack(userConfig);
         autoInvPick = new AutoInvPick(userConfig);
         pluginManager.registerEvents(this, plugin);

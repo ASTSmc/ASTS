@@ -9,5 +9,5 @@ contributors: [AS_Allen_Shih, cuteebear0123]
 description: '[ASTS]自製插件'
 website: https://asts.tw/
 depend: []
-softdepend: [floodgate, PlaceholderAPI, Residence]
+softdepend: [Geyser-Spigot, floodgate, PlaceholderAPI, Residence]
 loadbefore: []

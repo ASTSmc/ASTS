@@ -11,7 +11,7 @@ import tw.asts.mc.asts.util.UserConfig;
 import java.util.*;
 import java.util.stream.Stream;
 
-public class AutoInvPick {
+final public class AutoInvPick {
     private final UserConfig userConfig;
     private final List<Material> dropBlock;
     public AutoInvPick(UserConfig userConfig) {

@@ -1,19 +1,15 @@
 package tw.asts.mc.asts.recipe;
 
 import org.bukkit.plugin.Plugin;
+import tw.asts.mc.asts.util.Log;
 
-public class Recipe {
+import java.util.logging.Level;
+
+final public class Recipe {
     public Recipe(Plugin plugin) {
+        Log.get().log(Level.INFO, "正在載入配方");
         // 材料染料顏色轉換
-        new DyeSwitch(plugin, "concrete_powder");
-        new DyeSwitch(plugin, "concrete");
-        new DyeSwitch(plugin, "wool");
-        new DyeSwitch(plugin, "carpet");
-        new DyeSwitch(plugin, "glazed_terracotta");
-        new DyeSwitch(plugin, "bed");
-        new DyeSwitch(plugin, "banner");
-        new DyeSwitch(plugin, "stained_glass");
-        new DyeSwitch(plugin, "stained_glass_pane");
+        new DyeSwitch(plugin);
         // 熔爐配方
         new Furnace(plugin);
     }
