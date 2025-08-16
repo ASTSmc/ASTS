@@ -36,10 +36,9 @@ final public class DyeSwitch {
             List<String> otherColors = colors.stream().filter(c -> !c.equals(color)).toList();
             List<Material> otherMaterial = otherColors.stream().map(c -> Material.getMaterial((c + "_" + itemName).toUpperCase())).filter(Objects::nonNull).toList();
             for (int i = 1; i < 9; i++) {
-                int finalI = i;
-                ShapelessRecipe recipe = new ShapelessRecipe(new NamespacedKey(plugin, "dye-switch_" + color + "_" + itemName + "_" + finalI), new ItemStack(colorMaterial, finalI));
+                ShapelessRecipe recipe = new ShapelessRecipe(new NamespacedKey(plugin, "dye-switch_" + color + "_" + itemName + "_" + i), new ItemStack(colorMaterial, i));
                 recipe.addIngredient(1, colorDye);
-                for (int j = 1; j <= finalI; j++) {
+                for (int j = 1; j <= i; j++) {
                     recipe.addIngredient(new RecipeChoice.MaterialChoice(otherMaterial));
                 }
                 plugin.getServer().addRecipe(recipe);
