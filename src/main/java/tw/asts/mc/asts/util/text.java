@@ -2,9 +2,22 @@ package tw.asts.mc.asts.util;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.jetbrains.annotations.NotNull;
 
 public final class text {
-    public static String miniMessage(String message) {
+    public static @NotNull Component m(@NotNull String message) {
+        return MiniMessage.miniMessage().deserialize(message);
+    }
+    public static @NotNull Component l(@NotNull String message) {
+        return m(legacy(message));
+    }
+    public static @NotNull Component o(@NotNull Component... components) {
+        return Component.empty().append(components);
+    }
+    public static @NotNull Component nl() {
+        return Component.newline();
+    }
+    public static @NotNull String legacy(@NotNull String message) {
         return message
                 .replaceAll("§0", "<black>")
                 .replaceAll("§1", "<dark_blue>")
@@ -29,7 +42,13 @@ public final class text {
                 .replaceAll("§o", "<italic>")
                 .replaceAll("§r", "<reset>");
     }
-    public static Component miniMessageComponent(String message) {
-        return MiniMessage.miniMessage().deserialize(message);
+    public static @NotNull Component prefix(@NotNull Component type) {
+        return t("asts.prefix", t("asts.server"), type);
+    }
+    public static @NotNull Component t(@NotNull String keyId) {
+        return Component.translatable(keyId);
+    }
+    public static @NotNull Component t(@NotNull String keyId, @NotNull Component... args) {
+        return Component.translatable(keyId, args);
     }
 }

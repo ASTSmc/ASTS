@@ -10,11 +10,10 @@ import tw.asts.mc.asts.util.Log;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.logging.Level;
 
 final public class DyeSwitch {
     public DyeSwitch(Plugin plugin) {
-        Log.get().log(Level.INFO, "正在載入染色配方");
+        Log.info("正在載入染色配方");
         addRecipe(plugin, "concrete_powder");
         addRecipe(plugin, "concrete");
         addRecipe(plugin, "wool");

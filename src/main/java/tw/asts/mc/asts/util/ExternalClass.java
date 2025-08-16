@@ -6,7 +6,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
 import java.util.List;
-import java.util.logging.Level;
 
 final public class ExternalClass {
     private Class<?> clazz = null;
@@ -42,7 +41,7 @@ final public class ExternalClass {
                         .getConstructor(parameterTypes.toArray(new Class<?>[0]))
                         .newInstance(args.toArray(new Object[0]));
             } catch (Exception e) {
-                Log.get().log(Level.WARNING, "無法載入外部類別: " + name, e);
+                Log.warn("無法載入外部類別: " + name, e);
             }
         }
     }
@@ -65,7 +64,7 @@ final public class ExternalClass {
             Method method = clazz.getMethod(name, parameterTypes.toArray(new Class<?>[0]));
             return method.invoke(instance, args.toArray(new Object[0]));
         } catch (Exception e) {
-            Log.get().log(Level.WARNING, "無法執行外部類別方法: " + name, e);
+            Log.warn("無法執行外部類別方法: " + name, e);
             return null;
         }
     }

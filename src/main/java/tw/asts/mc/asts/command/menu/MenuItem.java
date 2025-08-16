@@ -38,17 +38,17 @@ final public class MenuItem {
             return item;
         }
         ItemMeta itemMeta = item.getItemMeta();
-        itemMeta.customName(text.miniMessageComponent(text.miniMessage("§6" + name)));
+        itemMeta.customName(text.l("§6" + name));
         final ArrayList<Component> lores = new ArrayList<>();
         List<Component> lore = itemMeta.lore();
         if (lore != null) {
             lores.addAll(lore);
         }
         if (description != null && !description.isEmpty()) {
-            lores.add(text.miniMessageComponent(text.miniMessage("§7" + description)));
+            lores.add(text.l("§7" + description));
         }
         if (command != null && !command.isEmpty()) {
-            lores.add(text.miniMessageComponent(text.miniMessage("§7/" + command)));
+            lores.add(text.l("§7/" + command));
         }
         itemMeta.lore(lores.isEmpty() ? null : lores.stream().toList());
         item.setItemMeta(itemMeta);

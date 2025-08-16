@@ -1,7 +1,6 @@
 package tw.asts.mc.asts;
 
 import java.util.List;
-import java.util.logging.Level;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
@@ -26,7 +25,8 @@ public final class ASTS extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         Log.init(getLogger());
-        Log.get().log(Level.INFO, "正在啟動插件");
+        Log.info("正在啟動插件");
+        new Bundle();
         config = getConfig();
         config.addDefault("wtp.disable.worlds", List.of("world_nether", "world_the_end"));
         config.addDefault("rtp.disable.worlds", List.of("ASTS"));
@@ -43,17 +43,17 @@ public final class ASTS extends JavaPlugin implements Listener {
         new Recipe(this);
         ExternalClass.plugin(this, "PlaceholderAPI", "tw.asts.mc.asts.util.Placeholder", List.of(Plugin.class, UserConfig.class), List.of(this, userConfig)).runMethod("register");
         ExternalClass.plugin(this, "Residence", "tw.asts.mc.asts.util.LightBlock", List.of(Plugin.class), List.of(this));
-        Log.get().log(Level.INFO, "插件已啟動");
+        Log.info("插件已啟動");
     }
 
     @Override
     public void onDisable() {
-        Log.get().log(Level.INFO, "關閉插件");
+        Log.info("關閉插件");
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        event.getPlayer().sendMessage(text.miniMessageComponent(text.miniMessage(BasicConfig.name + " - 歡迎來到" + BasicConfig.name + "！")));
+        event.getPlayer().sendMessage(text.o(text.t("asts.server"), text.l(" - 歡迎來到"), text.t("asts.server"), text.l("！")));
     }
 
 }

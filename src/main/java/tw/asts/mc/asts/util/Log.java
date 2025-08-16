@@ -2,6 +2,7 @@ package tw.asts.mc.asts.util;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 final public class Log {
@@ -11,5 +12,14 @@ final public class Log {
     }
     public static Logger get() {
         return logger;
+    }
+    public static void info(String message) {
+        get().info(message);
+    }
+    public static void warn(Throwable thrown) {
+        warn(thrown.getMessage(), thrown.getCause());
+    }
+    public static void warn(String message, Throwable thrown) {
+        get().log(Level.WARNING, message, thrown);
     }
 }

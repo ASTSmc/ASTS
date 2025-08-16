@@ -11,13 +11,11 @@ import org.bukkit.plugin.PluginManager;
 import tw.asts.mc.asts.util.Log;
 import tw.asts.mc.asts.util.UserConfig;
 
-import java.util.logging.Level;
-
 final public class Event implements Listener {
     private final MobAttack mobAttack;
     private final AutoInvPick autoInvPick;
     public Event(Plugin plugin, PluginManager pluginManager, UserConfig userConfig) {
-        Log.get().log(Level.INFO, "正在載入事件");
+        Log.info("正在載入事件");
         mobAttack = new MobAttack(userConfig);
         autoInvPick = new AutoInvPick(userConfig);
         pluginManager.registerEvents(this, plugin);

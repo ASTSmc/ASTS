@@ -5,8 +5,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.logging.Level;
-
 @SuppressWarnings("unused")
 final public class Placeholder extends PlaceholderExpansion {
 
@@ -22,7 +20,7 @@ final public class Placeholder extends PlaceholderExpansion {
     }
 
     public Placeholder(Plugin plugin, UserConfig userConfig) {
-        Log.get().log(Level.INFO, "正在註冊PlaceholderAPI");
+        Log.info("正在註冊PlaceholderAPI");
         this.plugin = plugin;
         this.userConfig = userConfig;
         geyser = ExternalClass.plugin(plugin, "Geyser-Spigot", "tw.asts.mc.asts.util.placeholder.Geyser");
@@ -51,7 +49,7 @@ final public class Placeholder extends PlaceholderExpansion {
     @Override
     public String onRequest(OfflinePlayer player, String identifier) {
         if (identifier.equals("name")) {
-            return BasicConfig.name;
+            return "§6[§4ASTS§6]§eAllen§a跨平台§b插件§f伺服器§r";
         } else if (identifier.startsWith("user_")) {
             String username = player.getName();
             if (identifier.equals("user_mob_attack")) {

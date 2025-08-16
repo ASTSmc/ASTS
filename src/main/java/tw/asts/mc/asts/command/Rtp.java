@@ -3,19 +3,19 @@ package tw.asts.mc.asts.command;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
-import io.papermc.paper.command.brigadier.BasicCommand;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
-import tw.asts.mc.asts.util.BasicConfig;
+import tw.asts.mc.asts.util.PluginPermission;
+import tw.asts.mc.asts.util.action.CommandAction;
+import tw.asts.mc.asts.util.action.CommandExecuteAction;
 import tw.asts.mc.asts.util.text;
 
 import java.util.*;
 
-public final class Rtp implements BasicCommand {
+public final class Rtp extends CommandAction {
 
     private final List<String> disabledWorlds;
     private final boolean disabledRadiusFar;
@@ -26,6 +26,7 @@ public final class Rtp implements BasicCommand {
     private final Map<String, Long> cooldowns = new HashMap<>();
 
     public Rtp(FileConfiguration config, Plugin plugin) {
+        super("隨機傳送");
         this.disabledWorlds = config.getStringList("rtp.disable.worlds");
         this.disabledRadiusFar = config.getBoolean("rtp.disable.far");
         this.radiusDefault = config.getInt("rtp.radius.default");
@@ -34,16 +35,15 @@ public final class Rtp implements BasicCommand {
     }
 
     @Override
-    public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
-
-        if (stack.getExecutor() == null || stack.getExecutor().getType() != EntityType.PLAYER) {
-            stack.getSender().sendMessage(text.miniMessageComponent(text.miniMessage(BasicConfig.prefix("隨機傳送") + "只有玩家可以使用此指令！")));
+    public void execute(@NotNull CommandSourceStack stack, @NotNull String @NotNull [] args) {
+        final CommandExecuteAction executeAction = executeAction(stack, args);
+        if (executeAction.onlyPlayer()) {
             return;
-        } else if (disabledWorlds.contains(stack.getExecutor().getWorld().getName())) {
-            stack.getSender().sendMessage(text.miniMessageComponent(text.miniMessage(BasicConfig.prefix("隨機傳送") + "此世界禁用了隨機傳送！")));
+        } else if (disabledWorlds.contains(Objects.requireNonNull(stack.getExecutor()).getWorld().getName())) {
+            executeAction.sendMessage(text.t("asts.cmd.rtp.disabledWorld"), true);
             return;
         } else if (args.length > 1) {
-            stack.getSender().sendMessage(text.miniMessageComponent(text.miniMessage(BasicConfig.prefix("隨機傳送") + "請輸入正確的參數！")));
+            executeAction.sendMessage(text.l("asts.cmd.unknownArg"), true);
             return;
         }
         int max = radiusDefault;
@@ -54,22 +54,22 @@ public final class Rtp implements BasicCommand {
                 minY = -60;
             } else if (arg.equals("far")) {
                 if (disabledRadiusFar) {
-                    stack.getSender().sendMessage(text.miniMessageComponent(text.miniMessage(BasicConfig.prefix("隨機傳送") + "遠距傳送已被禁用！")));
+                    executeAction.sendMessage(text.t("asts.cmd.rtp.disabledFar"), true);
                     return;
                 }
                 max = radiusFar;
             } else {
-                stack.getSender().sendMessage(text.miniMessageComponent(text.miniMessage(BasicConfig.prefix("隨機傳送") + "請輸入正確的參數！")));
+                executeAction.sendMessage(text.t("asts.cmd.unknownArg"), true);
                 return;
             }
         }
-        if (cooldowns.containsKey(stack.getSender().getName()) && cooldowns.get(stack.getSender().getName()) - System.currentTimeMillis() / 1000 < cooldownTime * 1000L) {
-            long timeLeft = (cooldowns.get(stack.getSender().getName()) + cooldownTime * 1000L - System.currentTimeMillis()) / 1000;
-            stack.getSender().sendMessage(text.miniMessageComponent(text.miniMessage(BasicConfig.prefix("隨機傳送") + "請等待 " + timeLeft + " 秒後再使用此指令！")));
+        if (cooldowns.containsKey(executeAction.getPlayerName()) && cooldowns.get(executeAction.getPlayerName()) - System.currentTimeMillis() / 1000 < cooldownTime * 1000L) {
+            final long timeLeft = (cooldowns.get(executeAction.getPlayerName()) + cooldownTime * 1000L - System.currentTimeMillis()) / 1000;
+            executeAction.sendMessage(text.t("asts.cmd.waitSeconds", text.l(String.valueOf(timeLeft))), true);
             return;
         }
-        cooldowns.put(stack.getSender().getName(), System.currentTimeMillis());
-        World world = stack.getExecutor().getWorld();
+        cooldowns.put(executeAction.getPlayerName(), System.currentTimeMillis());
+        final World world = Objects.requireNonNull(executeAction.getExecutor()).getWorld();
         if (world.getEnvironment() == World.Environment.NETHER) {
             minY = 32;
         }
@@ -82,13 +82,13 @@ public final class Rtp implements BasicCommand {
                 List<Material> unsafeBlocks = List.of(Material.CACTUS, Material.COBWEB, Material.MAGMA_BLOCK, Material.SWEET_BERRY_BUSH);
                 boolean teleported = false;
                 int x = (int) (Math.random() * finalMax * 2) - finalMax;
-                int xinit = x;
+                final int xInit = x;
                 int z = (int) (Math.random() * finalMax * 2) - finalMax;
                 while(!teleported && stack.getExecutor().isValid()){
                     x+=1;
                     if (retry>256){
                         z+=1;
-                        x = xinit;
+                        x = xInit;
                         retry=0;
                     }
 
@@ -109,19 +109,19 @@ public final class Rtp implements BasicCommand {
                         if (y < finalMinY) continue;
                     }
 
-                    Location blockLoc = new Location(world, x, y, z);
+                    final Location blockLoc = new Location(world, x, y, z);
                     if (!world.getBlockAt(blockLoc).getType().isSolid() || unsafeBlocks.contains(world.getBlockAt(blockLoc).getType())) {
                         continue;
                     }
 
-                    Location teleportLoc = new Location(world, x + 0.5, y + 1, z + 0.5);
+                    final Location teleportLoc = new Location(world, x + 0.5, y + 1, z + 0.5);
                     String locStr = x + ", " + y + ", " + z;
 
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            stack.getExecutor().sendMessage(text.miniMessageComponent(text.miniMessage(BasicConfig.prefix("隨機傳送") + "正在把您傳送至 " + locStr + " ...")));
-                            stack.getExecutor().teleport(teleportLoc);
+                            executeAction.sendMessage(text.t("asts.cmd.tp.teleportTo", text.l(locStr)), true);
+                            executeAction.teleport(teleportLoc);
                         }
                     }.runTask(plugin);
                     teleported = true;
@@ -129,7 +129,7 @@ public final class Rtp implements BasicCommand {
             }
         }.runTaskAsynchronously(plugin);
     }
-    public @NotNull Collection<String> suggest(@NotNull CommandSourceStack stack, @NotNull String[] args) {
+    public @NotNull Collection<String> suggest(@NotNull CommandSourceStack stack, @NotNull String @NotNull [] args) {
         if (args.length <= 1) {
             List<String> arg1 = List.of("cave", "far");
             if (args.length == 1) {
@@ -138,5 +138,10 @@ public final class Rtp implements BasicCommand {
             return arg1;
         }
         return List.of();
+    }
+
+    @Override
+    public String permission() {
+        return PluginPermission.commandRtp;
     }
 }

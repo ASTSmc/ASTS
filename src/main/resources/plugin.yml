@@ -8,6 +8,27 @@ authors: [AS_Allen_Shih]
 contributors: [AS_Allen_Shih, cuteebear0123]
 description: '[ASTS]自製插件'
 website: https://asts.tw/
+permissions:
+  asts.admin:
+    description: 'Is allowed to use all functions of ASTS.'
+    default: op
+  asts.command:
+    description: 'Is allowed to use all commands of ASTS.'
+    default: true
+    children:
+      asts.command.asts:
+        description: 'Is allowed to use the /asts command.'
+        default: true
+      asts.command.menu:
+        description: 'Is allowed to use the /menu command.'
+        default: true
+      asts.command.rtp:
+        description: 'Is allowed to use the /rtp command.'
+        default: true
+      asts.command.wtp:
+        description: 'Is allowed to use the /wtp command.'
+        default: true
+default-permission: true
 depend: []
 softdepend: [Geyser-Spigot, floodgate, PlaceholderAPI, Residence]
 loadbefore: []

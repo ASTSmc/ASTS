@@ -15,11 +15,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.logging.Level;
-
 final public class LightBlock implements Listener {
     public LightBlock(@NotNull Plugin plugin) {
-        Log.get().log(Level.INFO, "正在註冊光源使用區域限制事件");
+        Log.info("正在註冊光源使用區域限制事件");
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
@@ -30,7 +28,7 @@ final public class LightBlock implements Listener {
         Location loc = event.getInteractionPoint();
         ClaimedResidence res = Residence.getInstance().getResidenceManager().getByLoc(loc);
         Player player = event.getPlayer();
-        if (player.hasPermission(PluginPermission.admin())) {
+        if (player.hasPermission(PluginPermission.admin)) {
             return;
         }
         if (res != null) {
@@ -40,6 +38,6 @@ final public class LightBlock implements Listener {
             }
         }
         event.setCancelled(true);
-        player.sendMessage(text.miniMessageComponent(text.miniMessage(BasicConfig.prefix("§c你沒有權限在此區域放置光源"))));
+        player.sendMessage(text.prefix(text.l("§c你沒有權限在此區域放置光源")));
     }
 }

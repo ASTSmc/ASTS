@@ -6,18 +6,18 @@ import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
+import org.jetbrains.annotations.NotNull;
 import tw.asts.mc.asts.util.Log;
 import tw.asts.mc.asts.util.UserConfig;
 
 import java.util.List;
-import java.util.logging.Level;
 
 public final class Command {
-    public Command(Plugin plugin, PluginManager pluginManager, FileConfiguration config, UserConfig userConfig) {
-        Log.get().log(Level.INFO, "正在載入指令");
+    public Command(@NotNull Plugin plugin, PluginManager pluginManager, FileConfiguration config, UserConfig userConfig) {
+        Log.info("正在載入指令");
         pluginManager.registerEvents(new MenuClick(), plugin);
         Menu menu = new Menu(plugin);
-        LifecycleEventManager<Plugin> manager = plugin.getLifecycleManager();
+        LifecycleEventManager<@NotNull Plugin> manager = plugin.getLifecycleManager();
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
             commands.register("wtp", "選擇世界傳送", List.of("worldtp", "wteleport", "worldteleport"), new Wtp(config));
