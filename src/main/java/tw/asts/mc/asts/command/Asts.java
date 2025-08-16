@@ -75,7 +75,7 @@ public final class Asts extends CommandAction {
             }
             userConfig.config.set(set, setValue);
             userConfig.save();
-            executeAction.sendMessage(text.t("asts.cmd.asts.set", text.t("asts.cmd.asts." + setName), text.t("asts.turnO" + (setValue ? "n" : "ff"))), true);
+            executeAction.sendMessage(text.t("asts.cmd.asts.set", text.t("asts.cmd.asts." + toCamelCase(setName)), text.t("asts.turnO" + (setValue ? "n" : "ff"))), true);
             if (executeAction.inArg(0, "sb")) {
                 executeAction.dispatchCommand("asb", "toggle", setValue ? "on" : "off");
             }
@@ -158,5 +158,20 @@ public final class Asts extends CommandAction {
     @Override
     public String permission() {
         return PluginPermission.commandAsts;
+    }
+    private @NotNull String toCamelCase(@NotNull String str) {
+        StringBuilder result = new StringBuilder();
+        for (String s : str.split("_")) {
+            if (s.isEmpty()) continue; // 跳過空字符串
+            if (result.isEmpty()) {
+                result.append(s.toLowerCase());
+            } else {
+                result.append(s.substring(0, 1).toUpperCase());
+                if (s.length() > 1) {
+                    result.append(s.substring(1).toLowerCase());
+                }
+            }
+        }
+        return result.toString();
     }
 }
