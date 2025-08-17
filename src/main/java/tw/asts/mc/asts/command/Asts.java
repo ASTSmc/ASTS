@@ -68,7 +68,7 @@ public final class Asts extends CommandAction {
             if (executeAction.inArg(1, "true", "false")) {
                 setValue = executeAction.inArg(1, "true");
             } else if (executeAction.inArg(1, "toggle")) {
-                setValue = userConfig.config.getBoolean(set, setDefault);
+                setValue = !userConfig.config.getBoolean(set, setDefault);
             } else {
                 executeAction.sendMessage(text.t("asts.cmd.unknownArg"));
                 return;
