@@ -61,7 +61,7 @@ public class CommandStackAction extends ServerAction {
     }
     public boolean onlyPlayer() {
         if (!isPlayer()) {
-            sendMessage(text.t("asts.omd.onlyPlayer"), true);
+            sendMessage(text.t("asts.cmd.onlyPlayer"), true);
             return true;
         }
         return false;
