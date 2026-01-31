@@ -25,14 +25,14 @@ final public class LightBlock implements Listener {
         if (event.getMaterial() != Material.LIGHT || event.getAction() != Action.RIGHT_CLICK_BLOCK) {
             return;
         }
-        Location loc = event.getInteractionPoint();
-        ClaimedResidence res = Residence.getInstance().getResidenceManager().getByLoc(loc);
-        Player player = event.getPlayer();
+        final Location loc = event.getInteractionPoint();
+        final ClaimedResidence res = Residence.getInstance().getResidenceManager().getByLoc(loc);
+        final Player player = event.getPlayer();
         if (player.hasPermission(PluginPermission.admin)) {
             return;
         }
         if (res != null) {
-            ResidencePermissions perms = res.getPermissions();
+            final ResidencePermissions perms = res.getPermissions();
             if (perms.playerHas(player, Flags.build, true)) {
                 return;
             }

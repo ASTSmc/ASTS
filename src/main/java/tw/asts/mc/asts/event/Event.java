@@ -53,37 +53,36 @@ final public class Event implements Listener {
     public void onRaidTrigger(RaidTriggerEvent event) {
         try {
             org.bukkit.Raid bukkitRaid = event.getRaid();
-            Method getHandle = bukkitRaid.getClass().getMethod("getHandle");
-            Object nmsRaid = getHandle.invoke(bukkitRaid);
+            final Method getHandle = bukkitRaid.getClass().getMethod("getHandle");
+            final Object nmsRaid = getHandle.invoke(bukkitRaid);
 
-            Field numGroupsField = nmsRaid.getClass().getDeclaredField("numGroups");
+            final Field numGroupsField = nmsRaid.getClass().getDeclaredField("numGroups");
             numGroupsField.setAccessible(true);
             numGroupsField.setInt(nmsRaid, 7);
-        }catch (Exception e){
+        } catch (Exception ignored){
         }
     }
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
-        Player victim = event.getEntity();
-        EntityDamageEvent damageEvent= victim.getLastDamageCause();
+        final Player victim = event.getEntity();
+        final EntityDamageEvent damageEvent= victim.getLastDamageCause();
         if (damageEvent instanceof EntityDamageByEntityEvent entityDamage) {
-            Entity damager = entityDamage.getDamager();
+            final Entity damager = entityDamage.getDamager();
             if (damager instanceof LivingEntity killer) {
                 if (killer.getEquipment() == null) return;
-                ItemStack weapon = killer.getEquipment().getItemInMainHand();
-                int looting=weapon.getEnchantmentLevel(Enchantment.LOOTING);
-
-                double rng = Math.random();
-                double rate=config.getDouble("player_head.rate");
-                if (looting==1)
+                final ItemStack weapon = killer.getEquipment().getItemInMainHand();
+                final int looting = weapon.getEnchantmentLevel(Enchantment.LOOTING);
+                double rate = config.getDouble("player_head.rate");
+                if (looting == 1)
                     rate = config.getDouble("player_head.looting.1");
-                else if (looting==2)
+                else if (looting == 2)
                     rate = config.getDouble("player_head.looting.2");
-                else if (looting>=3)
+                else if (looting >= 3)
                     rate = config.getDouble("player_head.looting.3");
-                if (rng<rate/100){
-                    ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD);
-                    SkullMeta meta = (SkullMeta) playerHead.getItemMeta();
+                final double rng = Math.random();
+                if (rng < rate / 100){
+                    final ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD);
+                    final SkullMeta meta = (SkullMeta) playerHead.getItemMeta();
                     if (meta != null) {
                         meta.setOwningPlayer(victim);
                         playerHead.setItemMeta(meta);

@@ -18,8 +18,8 @@ final public class MobAttack {
     }
 
     public void onMobAttack(@NotNull EntityTargetEvent event) {
-        Entity entity = event.getEntity();
-        Entity target = event.getTarget();
+        final Entity entity = event.getEntity();
+        final Entity target = event.getTarget();
         if (List.of(EntityType.WOLF, EntityType.AXOLOTL, EntityType.STRIDER, EntityType.SNOW_GOLEM, EntityType.IRON_GOLEM, EntityType.VILLAGER, EntityType.FROG).contains(entity.getType())) {
             return;
         }

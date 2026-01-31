@@ -16,8 +16,8 @@ public final class Command {
     public Command(@NotNull Plugin plugin, PluginManager pluginManager, FileConfiguration config, UserConfig userConfig) {
         Log.info("正在載入指令");
         pluginManager.registerEvents(new MenuClick(), plugin);
-        Menu menu = new Menu(plugin);
-        LifecycleEventManager<@NotNull Plugin> manager = plugin.getLifecycleManager();
+        final Menu menu = new Menu(plugin);
+        final LifecycleEventManager<@NotNull Plugin> manager = plugin.getLifecycleManager();
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
             commands.register("wtp", "選擇世界傳送", List.of("worldtp", "wteleport", "worldteleport"), new Wtp(config));

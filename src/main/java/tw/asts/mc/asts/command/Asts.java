@@ -33,7 +33,7 @@ public final class Asts extends CommandAction {
     public void execute(@NotNull CommandSourceStack stack, @NotNull String @NotNull [] args) {
         final CommandExecuteAction executeAction = executeAction(stack, args);
         if (args.length == 0) {
-            PluginMeta meta = plugin.getPluginMeta();
+            final PluginMeta meta = plugin.getPluginMeta();
             executeAction.sendMessage(text.o(text.t("asts.server"), text.l("\n" + meta.getDescription() + "\n網站：" + meta.getWebsite() + "\n版本：" + meta.getVersion() + "\n作者：" + meta.getAuthors().stream().reduce((a, b) -> a + "、" + b).orElse("無") + "\n貢獻者：" + meta.getContributors().stream().reduce((a, b) -> a + "、" + b).orElse("無"))));
             return;
         }

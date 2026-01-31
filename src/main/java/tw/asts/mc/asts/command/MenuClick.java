@@ -25,7 +25,7 @@ public final class MenuClick implements Listener {
     public void onInventoryClick(@NotNull InventoryClickEvent event) {
         if (event.getInventory().getHolder() instanceof Inventory) {
             event.setCancelled(true);
-            ItemStack item = event.getCurrentItem();
+            final ItemStack item = event.getCurrentItem();
             if (item == null || !item.getItemMeta().hasLore()) {
                 return;
             }
@@ -33,9 +33,9 @@ public final class MenuClick implements Listener {
             if (lore == null || lore.isEmpty()) {
                 return;
             }
-            String command = PlainTextComponentSerializer.plainText().serialize(lore.getLast()).substring(1);
-            String commandName = command.split(" ")[0];
-            Command commandServer = event.getWhoClicked().getServer().getCommandMap().getCommand(commandName);
+            final String command = PlainTextComponentSerializer.plainText().serialize(lore.getLast()).substring(1);
+            final String commandName = command.split(" ")[0];
+            final Command commandServer = event.getWhoClicked().getServer().getCommandMap().getCommand(commandName);
             if (commandServer != null) {
                 if (!commandName.equals("menu")) {
                     event.getWhoClicked().closeInventory();
@@ -51,8 +51,8 @@ public final class MenuClick implements Listener {
     @EventHandler
     public void onPlayerUse(PlayerInteractEvent event){
         if (event.getHand() == EquipmentSlot.HAND && (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_AIR)) {
-            Player player = event.getPlayer();
-            Block block = player.getTargetBlock(null, 100);
+            final Player player = event.getPlayer();
+            final Block block = player.getTargetBlock(null, 100);
             if (player.getInventory().getItemInMainHand().getType() == Material.COMPASS && block.getType() != Material.LODESTONE) {
                 event.setCancelled(true);
                 event.getPlayer().getServer().dispatchCommand(event.getPlayer(), "menu");

@@ -26,17 +26,17 @@ final public class DyeSwitch {
         addRecipe(plugin, "shulker_box");
     }
     private void addRecipe(Plugin plugin, String itemName) {
-        List<String> colors = List.of("white", "orange", "magenta", "light_blue", "yellow", "lime", "pink", "gray", "light_gray", "cyan", "purple", "blue", "brown", "green", "red", "black");
+        final List<String> colors = List.of("white", "orange", "magenta", "light_blue", "yellow", "lime", "pink", "gray", "light_gray", "cyan", "purple", "blue", "brown", "green", "red", "black");
         for (String color : colors) {
             Material colorDye = Material.getMaterial((color + "_dye").toUpperCase());
             Material colorMaterial = Material.getMaterial((color + "_" + itemName).toUpperCase());
             if (colorDye == null || colorMaterial == null) {
                 continue;
             }
-            List<String> otherColors = colors.stream().filter(c -> !c.equals(color)).toList();
-            List<Material> otherMaterial = otherColors.stream().map(c -> Material.getMaterial((c + "_" + itemName).toUpperCase())).filter(Objects::nonNull).toList();
+            final List<String> otherColors = colors.stream().filter(c -> !c.equals(color)).toList();
+            final List<Material> otherMaterial = otherColors.stream().map(c -> Material.getMaterial((c + "_" + itemName).toUpperCase())).filter(Objects::nonNull).toList();
             for (int i = 1; i < 9; i++) {
-                ShapelessRecipe recipe = new ShapelessRecipe(new NamespacedKey(plugin, "dye-switch_" + color + "_" + itemName + "_" + i), new ItemStack(colorMaterial, i));
+                final ShapelessRecipe recipe = new ShapelessRecipe(new NamespacedKey(plugin, "dye-switch_" + color + "_" + itemName + "_" + i), new ItemStack(colorMaterial, i));
                 recipe.addIngredient(1, colorDye);
                 for (int j = 1; j <= i; j++) {
                     recipe.addIngredient(new RecipeChoice.MaterialChoice(otherMaterial));

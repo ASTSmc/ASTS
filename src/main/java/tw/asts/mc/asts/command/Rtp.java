@@ -115,7 +115,7 @@ public final class Rtp extends CommandAction {
                     }
 
                     final Location teleportLoc = new Location(world, x + 0.5, y + 1, z + 0.5);
-                    String locStr = x + ", " + y + ", " + z;
+                    final String locStr = x + ", " + y + ", " + z;
 
                     new BukkitRunnable() {
                         @Override

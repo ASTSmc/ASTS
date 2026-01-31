@@ -14,7 +14,7 @@ final public class Bundle {
         runText();
     }
     private void runText() {
-        TextMessageTranslationStore store = new TextMessageTranslationStore(Key.key("asts", "text"));
+        final TextMessageTranslationStore store = new TextMessageTranslationStore(Key.key("asts", "text"));
         translateStores(
                 store,
                 "bundle.Text",
@@ -29,7 +29,7 @@ final public class Bundle {
         }
     }
     private static void translateStore(AbstractTranslationStore.StringBased store, String baseName, Locale locale) {
-        ResourceBundle bundle = ResourceBundle.getBundle(baseName, locale, UTF8ResourceBundleControl.utf8ResourceBundleControl());
+        final ResourceBundle bundle = ResourceBundle.getBundle(baseName, locale, UTF8ResourceBundleControl.utf8ResourceBundleControl());
         store.registerAll(locale, bundle, true);
     }
 }

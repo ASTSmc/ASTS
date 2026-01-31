@@ -63,11 +63,11 @@ final public class AutoInvPick {
         if (userConfig.config.isSet("auto_inv_pick." + event.getPlayer().getName()) && !userConfig.config.getBoolean("auto_inv_pick." + event.getPlayer().getName())) {
             return;
         }
-        List<Item> items = event.getItems();
-        Collection<ItemStack> blockItems = new ArrayList<>();
+        final List<Item> items = event.getItems();
+        final Collection<ItemStack> blockItems = new ArrayList<>();
         items.forEach((item) -> blockItems.add(item.getItemStack()));
         blockItems.forEach(itemStack -> {
-            HashMap<Integer, ItemStack> remaining = event.getPlayer().getInventory().addItem(itemStack);
+            final HashMap<Integer, ItemStack> remaining = event.getPlayer().getInventory().addItem(itemStack);
             remaining.values().forEach(item -> event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), item));
         });
         event.setCancelled(true);

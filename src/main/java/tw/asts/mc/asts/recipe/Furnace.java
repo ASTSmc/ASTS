@@ -17,14 +17,14 @@ final public class Furnace {
         addRecipe(plugin, Material.RAW_GOLD_BLOCK, Material.GOLD_BLOCK, 9.0f, 1800, true, true);
     }
     private void addRecipe(Plugin plugin, Material fromMaterial, Material toMaterial, float experience, int cookingTime, boolean blastFurnace, boolean smoker) {
-        FurnaceRecipe recipe = new FurnaceRecipe(new NamespacedKey(plugin, "asts_furnace_"+ fromMaterial.name().toLowerCase() + "_" + toMaterial.name().toLowerCase()), new ItemStack(toMaterial, 1), fromMaterial, experience, cookingTime);
+        final FurnaceRecipe recipe = new FurnaceRecipe(new NamespacedKey(plugin, "asts_furnace_"+ fromMaterial.name().toLowerCase() + "_" + toMaterial.name().toLowerCase()), new ItemStack(toMaterial, 1), fromMaterial, experience, cookingTime);
         plugin.getServer().addRecipe(recipe);
         if (blastFurnace) {
-            BlastingRecipe blastingRecipe = new BlastingRecipe(new NamespacedKey(plugin, "asts_blast_"+ fromMaterial.name().toLowerCase() + "_" + toMaterial.name().toLowerCase()), new ItemStack(toMaterial, 1), fromMaterial, experience, cookingTime / 2);
+            final BlastingRecipe blastingRecipe = new BlastingRecipe(new NamespacedKey(plugin, "asts_blast_"+ fromMaterial.name().toLowerCase() + "_" + toMaterial.name().toLowerCase()), new ItemStack(toMaterial, 1), fromMaterial, experience, cookingTime / 2);
             plugin.getServer().addRecipe(blastingRecipe);
         }
         if (smoker) {
-            SmokingRecipe smokingRecipe = new SmokingRecipe(new NamespacedKey(plugin, "asts_smoke_"+ fromMaterial.name().toLowerCase() + "_" + toMaterial.name().toLowerCase()), new ItemStack(toMaterial, 1), fromMaterial, experience, cookingTime / 2);
+            final SmokingRecipe smokingRecipe = new SmokingRecipe(new NamespacedKey(plugin, "asts_smoke_"+ fromMaterial.name().toLowerCase() + "_" + toMaterial.name().toLowerCase()), new ItemStack(toMaterial, 1), fromMaterial, experience, cookingTime / 2);
             plugin.getServer().addRecipe(smokingRecipe);
         }
     }
