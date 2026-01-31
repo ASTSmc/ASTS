@@ -33,13 +33,17 @@ public final class ASTS extends JavaPlugin implements Listener {
         config.addDefault("rtp.disable.far", false);
         config.addDefault("rtp.radius.default", 10000);
         config.addDefault("rtp.radius.far", 100000);
+        config.addDefault("player_head.rate", 20);
+        config.addDefault("player_head.looting.1", 30);
+        config.addDefault("player_head.looting.2", 40);
+        config.addDefault("player_head.looting.3", 50);
         config.options().copyDefaults(true);
         saveConfig();
         userConfig = new UserConfig(this);
         PluginManager pluginManager = getServer().getPluginManager();
         pluginManager.registerEvents(this, this);
         command = new Command(this, pluginManager, config, userConfig);
-        event = new Event(this, pluginManager, userConfig);
+        event = new Event(this, pluginManager, userConfig,config);
         new Recipe(this);
         ExternalClass.plugin(this, "PlaceholderAPI", "tw.asts.mc.asts.util.Placeholder", List.of(Plugin.class, UserConfig.class), List.of(this, userConfig)).runMethod("register");
         ExternalClass.plugin(this, "Residence", "tw.asts.mc.asts.util.LightBlock", List.of(Plugin.class), List.of(this));
