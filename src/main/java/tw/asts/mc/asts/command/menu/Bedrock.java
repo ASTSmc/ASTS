@@ -2,6 +2,7 @@ package tw.asts.mc.asts.command.menu;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.geysermc.cumulus.form.SimpleForm;
+import org.geysermc.cumulus.response.SimpleFormResponse;
 import org.geysermc.floodgate.api.FloodgateApi;
 import org.jetbrains.annotations.NotNull;
 import tw.asts.mc.asts.util.Log;
@@ -11,7 +12,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-@SuppressWarnings("unused")
 final public class Bedrock extends Base {
     final private SimpleForm.Builder form = SimpleForm.builder();
     public Bedrock(@NotNull CommandExecuteAction executeAction, YamlConfiguration configMenu) {
@@ -43,18 +43,20 @@ final public class Bedrock extends Base {
                 form.button("返回主選單");
             }
         }
-        form.validResultHandler((response) -> {
+        form.validResultHandler((SimpleFormResponse response) -> {
             if (response == null) return;
-            List<String> command = Arrays.stream(Arrays.stream(response.clickedButton().text().split("\n")).toList().getLast().split(" ")).toList();
-            String commandName = Arrays.stream(Arrays.stream(response.clickedButton().text().split("\n")).toList().getLast().split(" ")).toList().getFirst();
-            List<String> commandArgs = command.subList(1, command.size());
-            if (executeAction.hasCommand(commandName.substring(1))) {
-                executeAction.dispatchCommand(commandName, commandArgs);
+            final List<String> command = Arrays.stream(Arrays.stream(response.clickedButton().text().split("\n")).toList().getLast().split(" ")).toList();
+            final String commandNameFirst = command.getFirst();
+            if (commandNameFirst.startsWith("/")) {
+                final String commandName = commandNameFirst.substring(1);
+                final List<String> commandArgs = command.subList(1, command.size());
+                if (executeAction.hasCommand(commandName)) {
+                    executeAction.dispatchCommand(commandName, commandArgs);
+                }
             }
-            else if (commandName.equals("返回主選單")) {
+            if (commandNameFirst.equals("返回主選單")) {
                 executeAction.dispatchCommand("menu");
-            }
-            else if (commandName.equals("返回上層選單")) {
+            } else if (commandNameFirst.equals("返回上層選單")) {
                 executeAction.dispatchCommand("menu", Arrays.copyOfRange(executeAction.getArgs(), 0, executeAction.getArgs().length - 1));
             }
         });
