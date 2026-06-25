@@ -3,7 +3,6 @@ package tw.asts.mc.asts.util;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.translation.AbstractTranslationStore;
 import net.kyori.adventure.translation.GlobalTranslator;
-import net.kyori.adventure.util.UTF8ResourceBundleControl;
 import tw.asts.mc.asts.util.adventure.TextMessageTranslationStore;
 
 import java.util.Locale;
@@ -29,7 +28,7 @@ final public class Bundle {
         }
     }
     private static void translateStore(AbstractTranslationStore.StringBased store, String baseName, Locale locale) {
-        final ResourceBundle bundle = ResourceBundle.getBundle(baseName, locale, UTF8ResourceBundleControl.utf8ResourceBundleControl());
+        final ResourceBundle bundle = ResourceBundle.getBundle(baseName, locale);
         store.registerAll(locale, bundle, true);
     }
 }
