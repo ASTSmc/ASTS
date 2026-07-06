@@ -4,6 +4,7 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import tw.asts.mc.asts.util.ExternalClass;
 import tw.asts.mc.asts.util.Log;
 import tw.asts.mc.asts.util.PluginPermission;
@@ -43,7 +44,7 @@ public final class Menu extends CommandAction {
         if (executeAction.onlyPlayer()) {
             return;
         }
-        if (open("Bedrock", executeAction)) {
+        if (open("Bedrock", executeAction, List.of("floodgate"))) {
             return;
         } else if (open("Inventory", executeAction)) {
             return;
@@ -52,9 +53,13 @@ public final class Menu extends CommandAction {
     }
 
     private boolean open(@NotNull String type, @NotNull CommandExecuteAction executeAction) {
+        return open(type, executeAction, null);
+    }
+
+    private boolean open(@NotNull String type, @NotNull CommandExecuteAction executeAction, @Nullable List<String> requiredPlugins) {
         final ExternalClass externalClass = ExternalClass.plugin(
                 plugin,
-                List.of("Geyser-Spigot", "floodgate"),
+                requiredPlugins,
                 "tw.asts.mc.asts.command.menu." + type,
                 List.of(CommandExecuteAction.class, YamlConfiguration.class),
                 List.of(executeAction, configMenu)

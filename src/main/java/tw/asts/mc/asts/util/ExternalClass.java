@@ -12,20 +12,22 @@ final public class ExternalClass {
     private Object instance = null;
     private boolean isEnabledPlugin = true;
 
-    public ExternalClass(@NotNull Server server, @NotNull String requiredPlugin, @NotNull String name) {
+    public ExternalClass(@NotNull Server server, String requiredPlugin, @NotNull String name) {
         this(server, List.of(requiredPlugin), name);
     }
-    public ExternalClass(@NotNull Server server, @NotNull List<String> requiredPlugins, @NotNull String name) {
+    public ExternalClass(@NotNull Server server, List<String> requiredPlugins, @NotNull String name) {
         this(server, requiredPlugins, name, null, null);
     }
-    public ExternalClass(@NotNull Server server, @NotNull String requiredPlugin, @NotNull String name, List<Class<?>> parameterTypes, List<Object> args) {
+    public ExternalClass(@NotNull Server server, String requiredPlugin, @NotNull String name, List<Class<?>> parameterTypes, List<Object> args) {
         this(server, List.of(requiredPlugin), name, parameterTypes, args);
     }
-    public ExternalClass(@NotNull Server server, @NotNull List<String> requiredPlugins, @NotNull String name, List<Class<?>> parameterTypes, List<Object> args) {
-        for (String plugin : requiredPlugins) {
-            if (server.getPluginManager().getPlugin(plugin) == null) {
-                isEnabledPlugin = false;
-                break;
+    public ExternalClass(@NotNull Server server, List<String> requiredPlugins, @NotNull String name, List<Class<?>> parameterTypes, List<Object> args) {
+        if (requiredPlugins != null) {
+            for (String plugin : requiredPlugins) {
+                if (server.getPluginManager().getPlugin(plugin) == null) {
+                    isEnabledPlugin = false;
+                    break;
+                }
             }
         }
         if (parameterTypes == null) {
@@ -69,16 +71,16 @@ final public class ExternalClass {
         }
     }
 
-    static public ExternalClass plugin(@NotNull Plugin plugin, @NotNull String requiredPlugin, @NotNull String name) {
+    static public ExternalClass plugin(@NotNull Plugin plugin, String requiredPlugin, @NotNull String name) {
         return plugin(plugin, List.of(requiredPlugin), name);
     }
-    static public ExternalClass plugin(@NotNull Plugin plugin, @NotNull List<String> requiredPlugins, @NotNull String name) {
+    static public ExternalClass plugin(@NotNull Plugin plugin, List<String> requiredPlugins, @NotNull String name) {
         return plugin(plugin, requiredPlugins, name, null, null);
     }
-    static public ExternalClass plugin(@NotNull Plugin plugin, @NotNull String requiredPlugin, @NotNull String name, List<Class<?>> parameterTypes, List<Object> args) {
+    static public ExternalClass plugin(@NotNull Plugin plugin, String requiredPlugin, @NotNull String name, List<Class<?>> parameterTypes, List<Object> args) {
         return plugin(plugin, List.of(requiredPlugin), name, parameterTypes, args);
     }
-    static public ExternalClass plugin(@NotNull Plugin plugin, @NotNull List<String> requiredPlugins, @NotNull String name, List<Class<?>> parameterTypes, List<Object> args) {
+    static public ExternalClass plugin(@NotNull Plugin plugin, List<String> requiredPlugins, @NotNull String name, List<Class<?>> parameterTypes, List<Object> args) {
         return new ExternalClass(
                 plugin.getServer(),
                 requiredPlugins,
