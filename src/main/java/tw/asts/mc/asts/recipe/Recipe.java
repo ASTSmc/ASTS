@@ -10,5 +10,6 @@ final public class Recipe {
         new DyeSwitch(plugin);
         // 熔爐配方
         new Furnace(plugin);
+        new Totem(plugin);
     }
 }
