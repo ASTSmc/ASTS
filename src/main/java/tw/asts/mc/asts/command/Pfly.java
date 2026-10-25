@@ -172,6 +172,11 @@ public final class Pfly implements Listener {
             if (session == null || !session.enabled) {
                 continue;
             }
+            // 被其他插件關閉飛行（allowFlight 被設為 false）時，結束 pfly
+            if (!player.getAllowFlight()) {
+                endSession(player, session, true);
+                continue;
+            }
             final boolean flying = player.isFlying();
 
             // 累計真正飛行時間
