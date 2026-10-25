@@ -7,4 +7,5 @@ final public class PluginPermission {
     final public static String commandMenu = "asts.command.menu";
     final public static String commandRtp = "asts.command.rtp";
     final public static String commandWtp = "asts.command.wtp";
+    final public static String commandPfly = "asts.pfly";
 }

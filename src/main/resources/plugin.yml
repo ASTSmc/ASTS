@@ -12,6 +12,9 @@ permissions:
   asts.admin:
     description: 'Is allowed to use all functions of ASTS.'
     default: op
+  asts.pfly:
+    description: 'Is allowed to use the /pfly command.'
+    default: true
   asts.command:
     description: 'Is allowed to use all commands of ASTS.'
     default: true
@@ -30,5 +33,5 @@ permissions:
         default: true
 default-permission: true
 depend: []
-softdepend: [Geyser-Spigot, floodgate, PlaceholderAPI, Residence]
+softdepend: [Geyser-Spigot, floodgate, PlaceholderAPI, Residence, Vault]
 loadbefore: []

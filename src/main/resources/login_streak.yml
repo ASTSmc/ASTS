@@ -1,0 +1,7 @@
+# 連續登入玩家資料（由插件自動維護，請勿手動編輯）
+# 每個 key 為玩家 UUID，欄位：
+#   streak         - 目前連續登入日數
+#   last-qualified - 最近一次列入連續登入的日期（yyyy-MM-dd）
+#   today          - 目前累計時長所屬的日期（yyyy-MM-dd）
+#   minutes        - 當日累計上線分鐘數
+players: {}

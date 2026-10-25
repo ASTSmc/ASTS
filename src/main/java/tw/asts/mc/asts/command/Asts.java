@@ -21,13 +21,15 @@ public final class Asts extends CommandAction {
     private FileConfiguration config;
     private final UserConfig userConfig;
     private final Menu menu;
+    private final Pfly pfly;
 
-    public Asts(Plugin plugin, FileConfiguration config, UserConfig userConfig, Menu menu) {
+    public Asts(Plugin plugin, FileConfiguration config, UserConfig userConfig, Menu menu, Pfly pfly) {
         super("ASTS指令");
         this.plugin = plugin;
         this.config = config;
         this.userConfig = userConfig;
         this.menu = menu;
+        this.pfly = pfly;
     }
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String @NotNull [] args) {
@@ -40,7 +42,7 @@ public final class Asts extends CommandAction {
         else if (executeAction.onlyPlayer()) {
             return;
         }
-        else if (executeAction.inArg(0, "mob", "sb", "inv")) {
+        else if (executeAction.inArg(0, "mob", "sb", "inv", "pflyinfo")) {
             if (args.length == 1) {
                 executeAction.sendMessage(text.t("asts.cmd.enterArg"));
                 return;
@@ -56,6 +58,10 @@ public final class Asts extends CommandAction {
             }
             else if (executeAction.inArg(0, "inv")) {
                 setName = "auto_inv_pick";
+                setDefault = true;
+            }
+            else if (executeAction.inArg(0, "pflyinfo")) {
+                setName = "pflyinfo";
                 setDefault = true;
             }
             final String playerName = executeAction.getPlayerName();
@@ -107,19 +113,33 @@ public final class Asts extends CommandAction {
                 executeAction.sendMessage(text.l("§a重載設定檔成功"));
                 return;
             }
+            else if (args[1].equals("pfly") && args.length >= 4 && args[2].equals("cost")) {
+                try {
+                    final double amount = Double.parseDouble(args[3]);
+                    if (amount < 0) {
+                        throw new NumberFormatException();
+                    }
+                    pfly.setCost(amount);
+                    executeAction.sendMessage(text.t("asts.cmd.asts.pfly.cost.set", text.l(Pfly.formatMoney(amount))));
+                    return;
+                } catch (NumberFormatException e) {
+                    executeAction.sendMessage(text.t("asts.cmd.asts.pfly.cost.invalid"));
+                    return;
+                }
+            }
         }
         executeAction.sendMessage(text.t("asts.cmd.unknownArg"));
     }
     @Override
     public @NotNull Collection<String> suggest(@NotNull CommandSourceStack stack, @NotNull String @NotNull [] args) {
-        List<String> arg0 = List.of("mob", "sb", "inv");
+        List<String> arg0 = List.of("mob", "sb", "inv", "pflyinfo");
         if (stack.getSender().hasPermission(PluginPermission.admin)) {
-            arg0 = List.of("mob", "sb", "inv", "admin");
+            arg0 = List.of("mob", "sb", "inv", "pflyinfo", "admin");
         }
         if (args.length == 0) {
             return arg0;
         }
-        if (args[0].equals("mob") || args[0].equals("sb") || args[0].equals("inv")) {
+        if (args[0].equals("mob") || args[0].equals("sb") || args[0].equals("inv") || args[0].equals("pflyinfo")) {
             List<String> arg1 = List.of("true", "false", "toggle");
             if (args.length == 1) {
                 return arg1;
@@ -132,7 +152,7 @@ public final class Asts extends CommandAction {
             }
         }
         else if (args[0].equals("admin")) {
-            List<String> arg1 = List.of("reload");
+            List<String> arg1 = List.of("reload", "pfly");
             if (args.length == 1) {
                 return arg1;
             }
@@ -146,6 +166,14 @@ public final class Asts extends CommandAction {
                 }
                 else if (args.length == 3) {
                     return arg2.stream().filter(a -> a.startsWith(args[2])).toList();
+                }
+            }
+            else if (args[1].equals("pfly")) {
+                if (args.length == 2) {
+                    return List.of("cost");
+                }
+                else if (args[2].equals("cost")) {
+                    return List.of();
                 }
             }
         }

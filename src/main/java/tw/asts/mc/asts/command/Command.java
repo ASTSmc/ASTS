@@ -13,7 +13,7 @@ import tw.asts.mc.asts.util.UserConfig;
 import java.util.List;
 
 public final class Command {
-    public Command(@NotNull Plugin plugin, PluginManager pluginManager, FileConfiguration config, UserConfig userConfig) {
+    public Command(@NotNull Plugin plugin, PluginManager pluginManager, FileConfiguration config, UserConfig userConfig, Pfly pfly) {
         Log.info("正在載入指令");
         pluginManager.registerEvents(new MenuClick(), plugin);
         final Menu menu = new Menu(plugin);
@@ -23,7 +23,8 @@ public final class Command {
             commands.register("wtp", "選擇世界傳送", List.of("worldtp", "wteleport", "worldteleport"), new Wtp(config));
             commands.register("rtp", "隨機傳送", List.of("randomtp", "rteleport", "randomteleport"), new Rtp(config, plugin));
             commands.register("menu", "開啟[ASTS]Allen跨平台伺服器選單", List.of("astsmenu"), menu);
-            commands.register("asts", "顯示插件資訊", new Asts(plugin, config, userConfig, menu));
+            commands.register("asts", "顯示插件資訊", new Asts(plugin, config, userConfig, menu, pfly));
+            commands.register("pfly", "開啟/關閉玩家飛行", List.of(), new PflyCommand(pfly));
         });
     }
 }
